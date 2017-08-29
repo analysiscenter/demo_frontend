@@ -1,0 +1,11 @@
+html {
+    font-size: 3vw;
+}
+
+.page.main .row {
+    text-align: center;
+}
+
+.page.main .big {
+    font-size: 10rem;
+}
