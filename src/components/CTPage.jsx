@@ -2,7 +2,10 @@ import React from 'react'
 import { Component } from 'react'
 import { Grid, Row, Col, Button } from 'react-bootstrap'
 import { Icon } from 'react-fa'
+import { observer } from 'mobx-react'
 
+
+@observer
 export default class CTPage extends Component {
   render() {
     return (
