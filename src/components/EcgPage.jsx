@@ -1,33 +1,31 @@
 import React from 'react';
 import { Component } from 'react';
-import { Route } from 'react-router-dom';
-import { EcgPatient }  from './EcgPatient.jsx'
-import { LinkButton, Header } from './Common.jsx'
+import { Route, Link } from 'react-router-dom';
+import { Grid, Row, Col, Button } from 'react-bootstrap'
+import { Icon } from 'react-fa'
+import { EcgPatientPage }  from './EcgPatientPage.jsx'
+import { LinkButton, EmptyPage } from './Common.jsx'
 
 export class EcgPage extends Component {
     render() {
         return (
             <div>
-                <Route exact path="/ecg" component={FullEcgPage} />
-                <Route path="/ecg/patient" component={EcgPatient} />
+                <Route exact path="/ecg" component={EcgListPage} />
+                <Route path="/ecg/:pid" component={EcgPatientPage} />
             </div>
         );
     }
 }
 
-export class FullEcgPage extends Component {
+export class EcgListPage extends Component {
     render() {
         return (
-            <div>
+            <div className="page main">
                 <div>
-                    <Header title={'Choose patient'} />
+                    <h1>Choose patient</h1>
                 </div>    
-                <div>
-                    <EcgButtonGroup />
-                </div>
-                <div>
-                    <LinkButton title={'Home'} path={'/'} query={{}}/>
-                </div>
+                <EcgButtonGroup />
+                <LinkButton title={'Home'} path={'/'}/>
             </div>
         );
     }
@@ -36,10 +34,20 @@ export class FullEcgPage extends Component {
 export class EcgButtonGroup extends Component { 
     render() {
         return (
-            <div>
-                <LinkButton title={'Patient_1'} path={'/ecg/patient'} query={{pid : 1}}/>  
-                <LinkButton title={'Patient_2'} path={'/ecg/patient'} query={{pid : 2}}/>  
-                <LinkButton title={'Patient_3'} path={'/ecg/patient'} query={{pid : 3}}/>             
+            <div>                
+                <Grid fluid>
+                    <Row>
+                        <Col xs={4}>
+                            <Link to="/ecg/1"><Icon name='heartbeat' className='big'><br />Patient 1</Icon></Link>
+                        </Col>
+                        <Col xs={4}>
+                            <Link to="/ecg/2"><Icon name='heartbeat' className='big'><br />Patient 2</Icon></Link>
+                        </Col>
+                        <Col xs={4}>
+                            <Link to="/ecg/3"><Icon name='heartbeat' className='big'><br />Patient 3</Icon></Link>
+                        </Col>
+                    </Row>
+                </Grid>
             </div>
         );
     }

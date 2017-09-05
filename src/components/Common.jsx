@@ -7,21 +7,11 @@ export class LinkButton extends Component {
     render() {
         return (
             <div>
-                <Button bsStyle="primary">
-                    <Link to={{pathname: this.props.path, query: this.props.query }}>
-                        {this.props.title}
+                <Button>
+                    <Link to={{pathname: this.props.path}} style={{ textDecoration: 'none' }}>
+                          {this.props.title} 
                     </Link>
-                 </Button>
-            </div>
-        );
-    }
-}
-
-export class Header extends Component {
-    render() {
-        return (
-            <div>
-                <h1>{this.props.title}</h1>
+                </Button>
             </div>
         );
     }
