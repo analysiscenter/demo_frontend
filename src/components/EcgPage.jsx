@@ -25,7 +25,7 @@ export class EcgListPage extends Component {
                     <h1>Choose patient</h1>
                 </div>    
                 <EcgButtonGroup />
-                <LinkButton title={'Home'} path={'/'}/>
+                <LinkButton title={'Home'} path={'/'} className='homeButton'/>
             </div>
         );
     }

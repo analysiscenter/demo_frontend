@@ -8,7 +8,7 @@ import { Icon } from 'react-fa'
 export class MainPage extends Component {
     render() {
         return (
-            <div >
+            <div className="page main">
                 <div>
                     <h1>Выберите направление</h1>             
                 </div>
@@ -23,9 +23,9 @@ export class MainPage extends Component {
 export class MainButtonGroup extends Component {
     render() {
         return (
-            <div className="page main">                
+            <div className="buttonGroup">                
                 <Grid fluid>
-                    <Row>
+                    <Row className='row'>
                         <Col xs={6}>
                             <Link to="/ecg"><Icon name='heartbeat' className='big'><br />ECG</Icon></Link>
                         </Col>

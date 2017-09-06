@@ -7,7 +7,7 @@ export class LinkButton extends Component {
     render() {
         return (
             <div>
-                <Button>
+                <Button bsStyle="default" className={this.props.className}>
                     <Link to={{pathname: this.props.path}} style={{ textDecoration: 'none' }}>
                           {this.props.title} 
                     </Link>
