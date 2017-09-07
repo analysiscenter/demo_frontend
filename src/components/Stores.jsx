@@ -10,6 +10,9 @@ export class EcgStore {
     @observable heart_rate = null
     @observable af_prob = null
     @observable annotation = null
+    @observable qrs_t = 0
+    @observable t_wave = 0
+    @observable p_wave = 0
     @observable isProcessed = false
    
     resetReport() {
@@ -18,6 +21,9 @@ export class EcgStore {
         this.heart_rate = null;
         this.af_prob = null;
         this.annotation = null;
+        this.qrs_t = 0;
+        this.t_wave = 0;
+        this.p_wave = 0;
         this.isProcessed = false;
     }
 
@@ -46,13 +52,15 @@ export class EcgStore {
             }
         })
        .then(function(response){
-               setTimeout(() => {
+                setTimeout(() => {
                     this.heart_rate = response.data.heart_rate;
                     this.af_prob = response.data.af_prob;
                     this.annotation = response.data.annotation;
                     this.isProcessed = true;
-                    }, 300);
-                
+                    this.qrs_t = 12;
+                    this.t_wave = 17;
+                    this.p_wave = 9;
+                    }, 300);               
             }.bind(this)
         );
     }
