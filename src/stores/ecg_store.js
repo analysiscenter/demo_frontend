@@ -38,5 +38,11 @@ export default class ECG_Store {
 		Object.assign(this.items[data.id], data)
 	}
 
-}
+	getSignal(id) {
+		this.server.emit(ECG_API.ECG_GET_ITEM_DATA, {id: id})
+	}
 
+	getReport(id) {
+		this.server.emit(ECG_API.ECG_GET_INFERENCE, {id: id})
+	}
+}
