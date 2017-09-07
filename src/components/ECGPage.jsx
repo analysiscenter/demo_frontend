@@ -8,20 +8,25 @@ import { inject, observer } from 'mobx-react'
 @inject("ecg_store")
 @observer
 export default class ECGPage extends Component {
-  render() {
-    return (
-    <div className="page ecg">
-        <Grid fluid>
-        <Row>
-            <Col xs={12}>
-            <h2>ECG</h2>
-                <ul>
-                { this.props.ecg_store.items.values().map( (item) => <li key={item.id}>{ item.name }</li> ) }
-                </ul>
-            </Col>
-        </Row>
-        </Grid>
-    </div>
-    )
-  }
+    onClick(id) {
+      console.log("page get signal", id)
+      this.props.ecg_store.getSignal(id)
+    }
+
+    render() {
+      return (
+      <div className="page ecg">
+          <Grid fluid>
+          <Row>
+              <Col xs={12}>
+              <h2>ECG</h2>
+                  <ul>
+                  { this.props.ecg_store.items.values().map( (item) => <li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.signal === undefined}</li> ) }
+                  </ul>
+              </Col>
+          </Row>
+          </Grid>
+      </div>
+      )
+    }
 }
