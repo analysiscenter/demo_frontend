@@ -3,7 +3,7 @@ import { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 
-import {ecg_store, ct_store} from '../stores/stores'
+import { ecg_store, ct_store } from '../stores/stores'
 import MainPage from './MainPage.jsx'
 import ECGPage from './ECGPage.jsx'
 import CTPage from './CTPage.jsx'

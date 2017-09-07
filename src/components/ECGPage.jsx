@@ -8,10 +8,6 @@ import { inject, observer } from 'mobx-react'
 @inject("ecg_store")
 @observer
 export default class ECGPage extends Component {
-  add() {
-     this.props.ecg_store.add("new item")
-  }
-
   render() {
     return (
     <div className="page ecg">
@@ -19,12 +15,9 @@ export default class ECGPage extends Component {
         <Row>
             <Col xs={12}>
             <h2>ECG</h2>
-                { this.props.ecg_store.report }
                 <ul>
-                { this.props.ecg_store.items.map((item, idx) => <li key={ idx }>{ item.item }</li>) }
+                { this.props.ecg_store.items.values().map( (item) => <li key={item.id}>{ item.name }</li> ) }
                 </ul>
-
-                <Button bsStyle="primary" onClick={ this.add }>Add</Button>
             </Col>
         </Row>
         </Grid>

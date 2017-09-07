@@ -5,20 +5,22 @@ export default class CT_Store {
 	server = null
 	@observable items = []
 
-    constructor() {
+    constructor(server) {
     	this.server = server
-        autorun(() => console.log(this.report))
+        autorun(() => console.log("CT report", this.report))
     }
 
 	@computed get report() {
 		if (this.items.length === 0)
 			return "<empty>"
-		return `Next item: "${this.items[0].item}". `
+		return `Items: "${this.items.length}". `
 	}
 
-	add(item) {
+	add(name) {
+        console.log("add CT")
 		this.items.push({
-			item: item
+            id: Math.ceil(Math.random() * 1234),
+			name: name
 		});
 	}
 }

@@ -10,6 +10,10 @@ const SocketIOEvents = {
   RECONNECT: 'reconnect'
 }
 
+const ServerEvents = keyMirror({
+    SERVER_READY: null
+})
+
 const CT_Requests = keyMirror({
 	CT_GET_LIST: null,
 	CT_GET_ITEM_DATA: null,
@@ -21,6 +25,8 @@ const CT_Responses = keyMirror({
 	CT_GOT_ITEM_DATA: null,
 	CT_GOT_INFERENCE: null
 })
+
+const CT_API = { CT_Responses, CT_Requests }
 
 const ECG_Requests = keyMirror({
 	ECG_GET_LIST: null,
@@ -34,11 +40,13 @@ const ECG_Responses = keyMirror({
 	ECG_GOT_INFERENCE: null
 })
 
+const ECG_API = Object.assign({},  ECG_Responses, ECG_Requests )
+
 const API_Requests = Object.assign({}, CT_Requests, ECG_Requests)
 const API_Responses = Object.assign({}, CT_Responses, ECG_Responses)
 
 const API_Events = Object.assign({}, API_Requests, API_Responses)
 
-const Events = Object.assign({}, SocketIOEvents, API_Events)
+const Events = Object.assign({}, SocketIOEvents, ServerEvents, API_Events)
 
-export default { Events, SocketIOEvents, API_Events, API_Responses, API_Requests }
+export { Events, SocketIOEvents, ServerEvents, API_Events, API_Responses, API_Requests, ECG_API, ECG_Responses, ECG_Requests, CT_Responses }
