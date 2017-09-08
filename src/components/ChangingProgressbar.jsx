@@ -10,18 +10,22 @@ export default class ChangingProgressbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPercentageIndex: 0,
+            currentPercentageIndex: 0
         };
     }
 
     componentDidMount() {
-        setInterval(() => {
+        this.myInterval = setInterval(() => {
             if (this.state.currentPercentageIndex < this.props.percentages.length - 1) {
                 this.setState({
                     currentPercentageIndex: this.state.currentPercentageIndex + 1
                 });
             }
         }, this.props.interval);
+    }
+    
+    componentWillUnmount() {
+        clearInterval(this.myInterval);
     }
     
     render() {

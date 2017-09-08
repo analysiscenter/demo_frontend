@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { Grid, Row, Col } from 'react-bootstrap'
 import { Icon } from 'react-fa'
 import { Link } from 'react-router-dom';
@@ -11,23 +11,22 @@ import EcgPatientInfoTable from './EcgPatientInfoTable.jsx'
 import EcgSignalPlot from './EcgSignalPlot.jsx';
 import EcgPatientResultCharts from './EcgPatientResultCharts.jsx';
 
-import ecgStore from './Stores.jsx';
-
+@inject("ecg_store")
 @observer
-export class EcgPatientPage extends Component {
+export default class EcgPatientPage extends Component {
     constructor(props) {
         super(props);
-        ecgStore.getSignal(props.match.params.pid);
+        this.props.ecg_store.getSignal(props.match.params.pid);
         this.state = {
             pid: props.match.params.pid
         };      
     }
 
     render() {
-        if(ecgStore.signal)
-            return this.renderPage()
-        else
+        if(this.props.ecg_store.items.get(this.state.pid).signal === null)
             return this.renderLoading()
+        else
+            return this.renderPage()
     }
     
     renderLoading() {
@@ -40,35 +39,37 @@ export class EcgPatientPage extends Component {
     }
     
     renderPage() {
+        let signal = this.props.ecg_store.items.get(this.state.pid).signal;
+        let frequency = this.props.ecg_store.items.get(this.state.pid).frequency;
+        let annotation = this.props.ecg_store.items.get(this.state.pid).annotation;
+        
         return (
-            <div className='page main'>
-                <div>                
-                    <Grid fluid>
-                        <Row>
-                            <Col xs={1}>
-                                <Link to="/ecg/"><Icon name='arrow-left' className='small'></Icon></Link>
-                            </Col>
-                            <Col xs={1}>
-                                <Link to="/"><Icon name='home' className='small'></Icon></Link>
-                            </Col>
-                        </Row>
-                    </Grid>
-                </div>
-            
-                <div>
-                    <h1>ECG signal analysis</h1>
-                </div>  
-                
-                <EcgPatientInfoTable />
- 
-                <EcgSignalPlot signal={ecgStore.signal} 
-                               fs={ecgStore.frequency} 
-                               annotation={ecgStore.annotation} />
-                
-                <ActionButton title={'Run ECG analysis'} className={'actionButton'}/>
-                
-                <EcgPatientResultCharts />
-            
+            <div className='page main'>                
+                <Grid fluid>
+                    <Row>
+                        <Col xs={1}>
+                            <Link to="/ecg/"><Icon name='arrow-left'></Icon></Link>
+                        </Col>
+                        <Col xs={1}>
+                            <Link to="/"><Icon name='home'></Icon></Link>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <h1>ECG signal analysis</h1>
+                    </Row>
+                    <Row>
+                        <EcgPatientInfoTable pid={this.state.pid}/>
+                    </Row>
+                    <Row>
+                        <EcgSignalPlot signal={signal} fs={frequency} annotation={annotation} />
+                    </Row>
+                    <Row>
+                        <ActionButton title={'Run ECG analysis'} pid={this.state.pid} />
+                    </Row>
+                    <Row>
+                        <EcgPatientResultCharts pid={this.state.pid}/>
+                    </Row>
+                </Grid>            
             </div>
         );
     }

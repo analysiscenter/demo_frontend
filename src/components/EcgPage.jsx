@@ -3,7 +3,9 @@ import { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import { Grid, Row, Col, Button } from 'react-bootstrap'
 import { Icon } from 'react-fa'
-import { EcgPatientPage }  from './EcgPatientPage.jsx'
+
+import EcgPatientPage from './EcgPatientPage.jsx'
+import EcgButtonGroup from './EcgButtonGroup.jsx'
 
 export class EcgPage extends Component {
     render() {
@@ -19,51 +21,18 @@ export class EcgPage extends Component {
 export class EcgListPage extends Component {
     render() {
         return (
-            <div className="page main">
-                <div>                
-                    <Grid fluid>
-                        <Row>
-                            <Col xs={1}>
-                                <Link to="/"><Icon name='home' className='small' /></Link>
-                            </Col>
-                        </Row>
-                    </Grid>
-                </div>
-                <div>
-                    <h1>Choose patient</h1>
-                </div>    
-                <EcgButtonGroup />
-            </div>
-        );
-    }
-}
-
-export class EcgButtonGroup extends Component { 
-    render() {
-        return (
-            <div>                
+            <div className='page main'>                
                 <Grid fluid>
                     <Row>
-                        <Col xs={4}>
-                            <Link to="/ecg/1"><Icon name='heartbeat' className='big'><br />Patient 1</Icon></Link>
-                        </Col>
-                        <Col xs={4}>
-                            <Link to="/ecg/2"><Icon name='heartbeat' className='big'><br />Patient 2</Icon></Link>
-                        </Col>
-                        <Col xs={4}>
-                            <Link to="/ecg/3"><Icon name='heartbeat' className='big'><br />Patient 3</Icon></Link>
+                        <Col xs={1}>
+                            <Link to="/"><Icon name='home' /></Link>
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={4}>
-                            <Link to="/ecg/1"><Icon name='heartbeat' className='big'><br />Patient 4</Icon></Link>
-                        </Col>
-                        <Col xs={4}>
-                            <Link to="/ecg/2"><Icon name='heartbeat' className='big'><br />Patient 5</Icon></Link>
-                        </Col>
-                        <Col xs={4}>
-                            <Link to="/ecg/3"><Icon name='heartbeat' className='big'><br />Patient 6</Icon></Link>
-                        </Col>
+                        <h1>Choose patient</h1>
+                    </Row>
+                    <Row>
+                        <EcgButtonGroup />
                     </Row>
                 </Grid>
             </div>

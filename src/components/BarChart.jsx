@@ -1,9 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { observer } from 'mobx-react';
-
-import ecgStore from './Stores.jsx';
+import { inject, observer } from 'mobx-react';
 
 const options = {
     legend: { display: false },
@@ -17,24 +15,18 @@ const options = {
     }
 };
 
-const _data = {
-    labels: ['QRS segment', 'T wave', 'P wave'],
-    datasets: [
-        {
-            data: [25, 20, 30],
-            backgroundColor: ['rgba(255,19,12,0.2)', 'rgba(255,19,132,0.2)', 'rgba(55,99,192,0.2)']
-        }
-    ],
-};
-
+@inject("ecg_store")
 @observer
 export default class BarChart extends Component {
     render() {
-        var data = {
+        let qrs_t = this.props.ecg_store.items.get(this.props.pid).qrs_t;
+        let t_wave = this.props.ecg_store.items.get(this.props.pid).t_wave;
+        let p_wave = this.props.ecg_store.items.get(this.props.pid).p_wave;
+        let data = {
             labels: ['QRS segment', 'T wave', 'P wave'],
             datasets: [
                 {
-                    data: [ecgStore.qrs_t, ecgStore.t_wave, ecgStore.p_wave],
+                    data: [qrs_t, t_wave, p_wave],
                     backgroundColor: ['rgba(255,19,12,0.2)', 'rgba(255,19,132,0.2)', 'rgba(55,99,192,0.2)']
                 }
             ],

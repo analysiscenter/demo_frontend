@@ -1,8 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
 
-import ecgStore from './Stores.jsx'
-
 export default class EcgSignalPlot extends Component {
     constructor(props) {
         super(props);

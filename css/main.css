@@ -1,81 +1,37 @@
 html {
-    font-size: 3vw;
+    font-size: 1vw;
 }
 
 .page.main {
     text-align: center;
 }
 
+.page.main .main-icon {
+    color: red;
+    font-size: 4rem;
+}
+
+.page.main .main-icon-text {
+    color: red;
+    font-size: 1rem;
+}
+
 .page.main .row {
     text-align: center;
+    font-size: 3rem;
 }
 
-.page.main .big {
-    font-size: 1rem;
-}
-
-.page.main .medium {
-    font-size: 1rem;
-    vertical-align: middle;
-    margin-right: 0.5rem;
-}
-
-.page.main .barchart {
-    height: 3rem;
-    color: red;
-    font-size: 13rem;
-    vertical-align: middle;
-}
-
-.page.main .barchart .CircularProgressbar-text { 
-    color: red; 
-    font-size: 0.7rem; 
-    fill: red; 
-}
-
-.page.main .barchart .CircularProgressbar-path {
+.page.main .CircularProgressbar .CircularProgressbar-path {
   stroke: #ff0000;
 }
 
-.page.main .centered {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-}
-
-.page.main .Big {
-    font-size: 3rem;
-    vertical-align: middle;
-    margin-right: 0.5rem;
-}
-
-.page.main .small {
-    font-size: 0.5rem;
-}
-
-.page.main .actionButton {
-    float: left;
-    
-}
-
-.page.main .icon-text {
-    font-size: 0.8rem;
-    vertical-align: middle;
-    
-}
-
-.CircularProgressbar .CircularProgressbar-path {
-    stroke: #3e98c7;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.5s ease 0s;
-}
-
-.CircularProgressbar .CircularProgressbar-trail {
+.page.main .CircularProgressbar .CircularProgressbar-trail {
     stroke: #d6d6d6;
 }
 
-.CircularProgressbar .CircularProgressbar-text {
-    fill: #3e98c7;
+.page.main .CircularProgressbar .CircularProgressbar-text {
+    fill: red;
+    color: red;
     font-size: 20px;
     dominant-baseline: middle;
     text-anchor: middle;
