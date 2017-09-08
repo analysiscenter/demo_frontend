@@ -9,11 +9,11 @@ import { inject, observer } from 'mobx-react'
 @observer
 export default class ECGPage extends Component {
     onClick(id) {
-        this.props.ecg_store.getSignal(id)
+        this.props.ecg_store.getItemData(id)
     }
 
-    onBut(id) {
-        this.props.ecg_store.getReport(id)
+    onInference(id) {
+        this.props.ecg_store.getInference(id)
     }
 
     render() {
@@ -24,7 +24,7 @@ export default class ECGPage extends Component {
                 <Col xs={12}>
                 <h2>ECG</h2>
                     <ul>
-                    { this.props.ecg_store.items.values().map( (item) => <span key={item.id}><li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.signal === null? "no signal" : "got" }</li> <Button onClick={this.onBut.bind(this, item.id)}/></span> ) }
+                    { this.props.ecg_store.items.values().map( (item) => <span key={item.id}><li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.signal === null? "no signal" : "got" }</li> <Button disabled={!!item.inference} onClick={this.onInference.bind(this, item.id)}/></span> ) }
                     </ul>
                 </Col>
             </Row>
