@@ -35,19 +35,23 @@ export default class ECG_Store {
 
     @action
     onGotItemData(data, meta){
+        console.log("on got", data)
         extendObservable(this.items.get(data.id), data)
     }
 
     @action
     onGotInference(data, meta){
+        console.log("on inf", data)
         extendObservable(this.items.get(data.id), data)
     }
 
     getSignal(id) {
+        console.log("get si", id)
         this.server.send(API_Events.ECG_GET_ITEM_DATA, {id: id})
     }
 
     getReport(id) {
+        console.log("get re", id)
         this.server.send(API_Events.ECG_GET_INFERENCE, {id: id})
     }
 }

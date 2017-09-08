@@ -20,7 +20,7 @@ export default class Server extends EventEmitter {
         // Listen to all events from server
         const onCommand = this.onCommand.bind(this)
         for(const api_key in API_Responses){
-            this.server.on(api_key, onCommand)
+            this.server.on(api_key, this.onCommand.bind(this, api_key))
         }
 
         for(const state in SocketIOEvents){
@@ -79,13 +79,14 @@ export default class Server extends EventEmitter {
         delete this.transactions[trans_id]
     }
 
-    onCommand(payload) {
+    onCommand(event, payload) {
         const isMine = this.server.id == payload.meta.sessionid
         this.emit(payload.event, payload.data, payload.meta)
     }
 
     send(event, data, trans) {
         const meta = { sessionid: this.server.id, transaction: trans }
+        console.log("server emit", event, data)
         this.server.emit(event, data, meta)
     }
 }

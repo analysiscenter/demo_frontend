@@ -12,6 +12,10 @@ export default class ECGPage extends Component {
         this.props.ecg_store.getSignal(id)
     }
 
+    onBut(id) {
+        this.props.ecg_store.getReport(id)
+    }
+
     render() {
         return (
         <div className="page ecg">
@@ -20,7 +24,7 @@ export default class ECGPage extends Component {
                 <Col xs={12}>
                 <h2>ECG</h2>
                     <ul>
-                    { this.props.ecg_store.items.values().map( (item) => <li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.signal === null? "no signal" : "got" }</li> ) }
+                    { this.props.ecg_store.items.values().map( (item) => <span key={item.id}><li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.signal === null? "no signal" : "got" }</li> <Button onClick={this.onBut.bind(this, item.id)}/></span> ) }
                     </ul>
                 </Col>
             </Row>
