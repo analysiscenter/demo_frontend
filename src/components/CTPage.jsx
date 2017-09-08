@@ -13,7 +13,6 @@ export default class CTPage extends Component {
     }
 
     render() {
-        console.log(this.props.ct_store.items.size)
         return (
         <div className="page ct">
             <Grid fluid>

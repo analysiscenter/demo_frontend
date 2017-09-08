@@ -20,7 +20,7 @@ export default class ECGPage extends Component {
                 <Col xs={12}>
                 <h2>ECG</h2>
                     <ul>
-                    { this.props.ecg_store.items.values().map( (item) => <li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.signal === undefined}</li> ) }
+                    { this.props.ecg_store.items.values().map( (item) => <li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.signal === null? "no signal" : "got" }</li> ) }
                     </ul>
                 </Col>
             </Row>

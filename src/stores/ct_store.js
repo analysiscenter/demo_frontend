@@ -1,7 +1,11 @@
-import { observable, autorun, action } from 'mobx'
+import { observable, autorun, action, extendObservable } from 'mobx'
 
 import { API_Events } from './const'
 
+
+const item_template = {
+    id: null, name: null, signal: null, inference: null
+}
 
 export default class CT_Store {
     server = null
@@ -24,18 +28,18 @@ export default class CT_Store {
 
     @action
     onGotList(data, meta){
-        data.map((item) => this.items.set(item.id, item))
+        data.map((item) => this.items.set(item.id, Object.assign({}, item_template, item)))
         this.ready = true
     }
 
     @action
     onGotItemData(data, meta){
-        this.items.set(data.id, Object.assign(this.items.get(data.id), data))
+        extendObservable(this.items.get(data.id), data)
     }
 
     @action
     onGotInference(data, meta){
-        this.items.set(data.id, Object.assign(this.items.get(data.id), data))
+        extendObservable(this.items.get(data.id), data)
     }
 
     getData(id) {
