@@ -7,6 +7,7 @@ const item_template = {
     id: null, name: null, image: null, mask: null, decision:null
 }
 
+
 export default class CT_Store {
     server = null
     @observable ready = false
@@ -42,7 +43,7 @@ export default class CT_Store {
         extendObservable(this.items.get(data.id), data)
     }
 
-    getData(id) {
+    getItemData(id) {
         this.server.send(API_Events.CT_GET_ITEM_DATA, {id: id})
     }
 
