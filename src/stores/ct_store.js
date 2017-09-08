@@ -4,7 +4,7 @@ import { API_Events } from './const'
 
 
 const item_template = {
-    id: null, name: null, signal: null, inference: null
+    id: null, name: null, image: null, mask: null, decision:null
 }
 
 export default class CT_Store {

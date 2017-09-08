@@ -2,7 +2,7 @@ import socket from 'socket.io-client'
 import { observable } from 'mobx'
 import EventEmitter from 'EventEmitter3'
 
-import { API_Responses, SocketIOEvents, API_Events } from './const'
+import { API_Responses, SocketIOEvents } from './const'
 
 
 export default class Server extends EventEmitter {
