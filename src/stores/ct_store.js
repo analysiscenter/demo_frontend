@@ -1,27 +1,48 @@
-import { observable, computed, autorun } from 'mobx'
+import { observable, autorun, action } from 'mobx'
+
+import { API_Events } from './const'
 
 
 export default class CT_Store {
     server = null
-    @observable items = []
+    @observable ready = false
+    @observable items = new Map()
 
     constructor(server) {
         this.server = server
-        autorun(() => console.log("CT report", this.report))
+        autorun(() => this.onConnect())
+        this.server.subscribe(API_Events.CT_GOT_LIST, this.onGotList.bind(this))
+        this.server.subscribe(API_Events.CT_GOT_ITEM_DATA, this.onGotItemData.bind(this))
+        this.server.subscribe(API_Events.CT_GOT_INFERENCE, this.onGotInference.bind(this))
     }
 
-    @computed get report() {
-        if (this.items.length === 0)
-            return "<empty>"
-        return `Items: "${this.items.length}". `
+    onConnect(){
+        if ((this.items.size == 0) & this.server.ready){
+            this.server.send(API_Events.CT_GET_LIST)
+        }
     }
 
-    add(name) {
-        console.log("add CT")
-        this.items.push({
-            id: Math.ceil(Math.random() * 1234),
-            name: name
-        });
+    @action
+    onGotList(data, meta){
+        data.map((item) => this.items.set(item.id, item))
+        this.ready = true
+    }
+
+    @action
+    onGotItemData(data, meta){
+        this.items.set(data.id, Object.assign(this.items.get(data.id), data))
+    }
+
+    @action
+    onGotInference(data, meta){
+        this.items.set(data.id, Object.assign(this.items.get(data.id), data))
+    }
+
+    getData(id) {
+        this.server.send(API_Events.CT_GET_ITEM_DATA, {id: id})
+    }
+
+    getInference(id) {
+        this.server.send(API_Events.CT_GET_INFERENCE, {id: id})
     }
 }
-

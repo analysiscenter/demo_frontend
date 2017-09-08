@@ -1,6 +1,6 @@
 import { observable, autorun, action } from 'mobx'
 
-import { ECG_API } from './const'
+import { API_Events } from './const'
 
 
 export default class ECG_Store {
@@ -11,14 +11,14 @@ export default class ECG_Store {
     constructor(server) {
         this.server = server
         autorun(() => this.onConnect())
-        this.server.subscribe(ECG_API.ECG_GOT_LIST, this.onGotList.bind(this))
-        this.server.subscribe(ECG_API.ECG_GOT_ITEM_DATA, this.onGotItemData.bind(this))
-        this.server.subscribe(ECG_API.ECG_GOT_INFERENCE, this.onGotInference.bind(this))
+        this.server.subscribe(API_Events.ECG_GOT_LIST, this.onGotList.bind(this))
+        this.server.subscribe(API_Events.ECG_GOT_ITEM_DATA, this.onGotItemData.bind(this))
+        this.server.subscribe(API_Events.ECG_GOT_INFERENCE, this.onGotInference.bind(this))
     }
 
     onConnect(){
         if ((this.items.size == 0) & this.server.ready){
-           this.server.send(ECG_API.ECG_GET_LIST)
+           this.server.send(API_Events.ECG_GET_LIST)
         }
     }
 
@@ -39,11 +39,10 @@ export default class ECG_Store {
     }
 
     getSignal(id) {
-        console.log("store get signal", id, ECG_API.ECG_GET_ITEM_DATA)
-        this.server.send(ECG_API.ECG_GET_ITEM_DATA, {id: id})
+        this.server.send(API_Events.ECG_GET_ITEM_DATA, {id: id})
     }
 
     getReport(id) {
-        this.server.send(ECG_API.ECG_GET_INFERENCE, {id: id})
+        this.server.send(API_Events.ECG_GET_INFERENCE, {id: id})
     }
 }
