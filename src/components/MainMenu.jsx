@@ -8,9 +8,9 @@ export default class MainMenu extends Component {
     render() {
         return (
         <Navbar className="main-menu">
-            <div><NavLink activeClassName="selected" exact to="/"><Icon name="home"/>Home</NavLink></div>
-            <div><NavLink activeClassName="selected" to="/ecg"><Icon name='heartbeat'/>ECG</NavLink></div>
-            <div><NavLink activeClassName="selected" to="/ct"><Icon name='universal-access'/>CT</NavLink></div>
+            <NavLink activeClassName="selected" exact to="/"><Icon name="home"/>Home</NavLink>
+            <NavLink activeClassName="selected" to="/ecg"><Icon name='heartbeat'/>ECG</NavLink>
+            <NavLink activeClassName="selected" to="/ct"><Icon name='universal-access'/>CT</NavLink>
         </Navbar>
         )
     }

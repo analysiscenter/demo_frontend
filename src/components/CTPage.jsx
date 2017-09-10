@@ -9,20 +9,27 @@ import { inject, observer } from 'mobx-react'
 @observer
 export default class CTPage extends Component {
     onClick(id) {
-        this.props.ct_store.getData(id)
+        this.props.ct_store.getItemData(id)
+    }
+
+    renderItem(item) {
+        return (
+        <Col xs={6} sm={4} md={3} lg={2} key={item.id}>
+            <div className="item">
+                <Icon name="universal-access"/><br/>
+                <span className="name">{item.name}</span>
+            </div>
+        </Col>
+        )
     }
 
     render() {
+        const self = this
         return (
         <div className="page ct">
             <Grid fluid>
             <Row>
-                <Col xs={12}>
-                <h2>CT</h2>
-                    <ul>
-                    { this.props.ct_store.items.values().map( (item) => <li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.data === undefined}</li> ) }
-                    </ul>
-                </Col>
+                { this.props.ct_store.items.values().map( (item) => self.renderItem(item) ) }
             </Row>
             </Grid>
         </div>

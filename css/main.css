@@ -1,9 +1,10 @@
 html {
-    font-size: 3vw;
+    font-size: 4vmin;
 }
 body {
     line-height: 1;
     font-family: 'Roboto', sans-serif;
+    font-size: 4vmin;
 }
 
 .main-menu {
@@ -29,6 +30,7 @@ body {
 	margin: 0;
 	color: #ffffff;
 	text-decoration: none;
+	font-family: 'Roboto Condensed', sans-serif;
 	font-weight: 300;
 }
 .main-menu a:hover {
@@ -43,6 +45,7 @@ body {
 .main-menu a.selected {
 	background: #ffffff;
 	color: #337ab7;
+	font-weight: 700;
 }
 
 .page.main .row {
@@ -51,4 +54,24 @@ body {
 
 .page.main .big {
     font-size: 10rem;
+}
+
+.page .item {
+	color: #337ab7;
+	text-align: center;
+	margin: 0.1rem;
+	padding: 0.5rem;
+	cursor: pointer;
+}
+.page .item .fa {
+	font-size: 4rem;
+}
+.page .item .name {
+	font-size: 1.5rem;
+	font-weight: 100;
+	user-select: none;
+}
+
+.page .item:hover {
+	background: #eeeeee;
 }
