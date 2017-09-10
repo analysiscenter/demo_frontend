@@ -1,5 +1,6 @@
 import React from 'react'
 import { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { Grid, Row, Col, Button } from 'react-bootstrap'
 import { Icon } from 'react-fa'
 import { inject, observer } from 'mobx-react'
@@ -8,25 +9,28 @@ import { inject, observer } from 'mobx-react'
 @inject("ecg_store")
 @observer
 export default class ECGPage extends Component {
-    onClick(id) {
-        this.props.ecg_store.getItemData(id)
-    }
-
-    onInference(id) {
-        this.props.ecg_store.getInference(id)
+   renderItem(item) {
+        return (
+        <Col xs={6} sm={4} md={3} lg={2} key={item.id}>
+            <div className="item">
+            <Link to={this.props.match.path + "/" + item.id}>
+                <div>
+                    <Icon name="heartbeat"/><br/>
+                    <span className="name">{item.name}</span>
+                </div>
+            </Link>
+            </div>
+        </Col>
+        )
     }
 
     render() {
+        const self = this
         return (
         <div className="page ecg">
             <Grid fluid>
             <Row>
-                <Col xs={12}>
-                <h2>ECG</h2>
-                    <ul>
-                    { this.props.ecg_store.items.values().map( (item) => <span key={item.id}><li key={item.id} onClick={this.onClick.bind(this, item.id)}>{ item.name } { item.signal === null? "no signal" : "got" }</li> <Button disabled={!!item.inference} onClick={this.onInference.bind(this, item.id)}/></span> ) }
-                    </ul>
-                </Col>
+                { this.props.ecg_store.items.values().map( item => self.renderItem(item) ) }
             </Row>
             </Grid>
         </div>

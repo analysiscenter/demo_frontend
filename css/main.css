@@ -8,6 +8,7 @@ body {
 }
 
 .main-menu {
+	margin: 0;
 	padding-top: 0;
 	background: #337ab7;
 	font-size: 1rem;
@@ -48,20 +49,32 @@ body {
 	font-weight: 700;
 }
 
+.page {
+	padding-top: 0.5rem;
+}
+
+.page.main {
+	padding-top: 1rem;
+}
 .page.main .row {
     text-align: center;
 }
-
-.page.main .big {
+.page.main .fa.big {
     font-size: 10rem;
 }
 
 .page .item {
 	color: #337ab7;
 	text-align: center;
-	margin: 0.1rem;
-	padding: 0.5rem;
 	cursor: pointer;
+}
+
+.page .item div {
+	padding: 0.5rem;
+}
+
+.page .item a {
+	text-decoration: none;
 }
 .page .item .fa {
 	font-size: 4rem;
@@ -75,3 +88,4 @@ body {
 .page .item:hover {
 	background: #eeeeee;
 }
+

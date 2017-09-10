@@ -7,7 +7,10 @@ import { ecg_store, ct_store } from '../stores/stores'
 import MainPage from './MainPage.jsx'
 import MainMenu from './MainMenu.jsx'
 import ECGPage from './ECGPage.jsx'
+import ECGItemPage from './ECGItemPage.jsx'
 import CTPage from './CTPage.jsx'
+import CTItemPage from './CTItemPage.jsx'
+
 
 export default class App extends Component {
   render() {
@@ -18,8 +21,10 @@ export default class App extends Component {
             <MainMenu />
             <Switch>
                 <Route exact path="/" component={MainPage} />
-                <Route path="/ecg" component={ECGPage} />
-                <Route path="/ct" component={CTPage} />
+                <Route exact path="/ecg" component={ECGPage} />
+                <Route path="/ecg/:id" component={ECGItemPage} />
+                <Route exact path="/ct" component={CTPage} />
+                <Route path="/ct/:id" component={CTItemPage} />
             </Switch>
         </div>
         </Router>
