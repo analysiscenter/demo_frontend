@@ -1,6 +1,49 @@
 html {
     font-size: 3vw;
 }
+body {
+    line-height: 1;
+    font-family: 'Roboto', sans-serif;
+}
+
+.main-menu {
+	padding-top: 0;
+	background: #337ab7;
+	font-size: 1rem;
+	border: 0;
+	min-height: 2rem;
+	padding-left: 0.3rem;
+	border-radius: 0;
+
+}
+.main-menu .container {
+	margin-left: 0;
+	padding: 0;
+}
+
+.main-menu a {
+	display: block;
+	float: left;
+	height: 2rem;
+	padding: 0.5rem 0.75rem;
+	margin: 0;
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: 300;
+}
+.main-menu a:hover {
+	text-decoration: none;
+	color: #337ab7;
+	background: #eeeeee;
+}
+.main-menu a .fa {
+	margin-right: 0.2rem;
+}
+
+.main-menu a.selected {
+	background: #ffffff;
+	color: #337ab7;
+}
 
 .page.main .row {
     text-align: center;

@@ -1,6 +1,6 @@
 import socket from 'socket.io-client'
 import { observable } from 'mobx'
-import EventEmitter from 'EventEmitter3'
+import EventEmitter from 'eventemitter3'
 
 import { API_Responses, SocketIOEvents } from './const'
 
