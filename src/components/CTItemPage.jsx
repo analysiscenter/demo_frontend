@@ -95,7 +95,7 @@ export default class CTItemPage extends Component {
                     { item.waitingDecision ?
                         <Icon name="spinner" spin />
                       :
-                        "Get prediction"
+                        "Predict"
                     }
                 </Button>
             </div>
