@@ -1,6 +1,6 @@
 import React from 'react'
 import { Component } from 'react'
-import { Grid, Row, Col, Button } from 'react-bootstrap'
+import { Grid, Row, Col, Button, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ReactBootstrapSlider } from 'react-bootstrap-slider'
 import Toggle from 'react-bootstrap-toggle'
 import { Icon } from 'react-fa'
@@ -51,7 +51,7 @@ export default class CTItemPage extends Component {
 
     renderImageViewer(item) {
         const self = this
-        const resizeFactor = 5
+        const resizeFactor = 8
 
         const imageData = this.props.ct_store.getImageSlice(item.id, this.state.currentSlice)
         const scan_image = this.drawImage(imageData, resizeFactor)
@@ -102,6 +102,19 @@ export default class CTItemPage extends Component {
         )
     }
 
+    handleNoduleClick(item, nodule_no) {
+        this.setState({currentSlice: item.nodules[nodule_no][0]})
+    }
+
+    renderNodulesList(item) {
+        return (
+            <ListGroup>
+                { item.nodules.map( (nodule, ix) =>
+                   <ListGroupItem key={ix} onClick={this.handleNoduleClick.bind(this, item, ix)}>Nodule [{nodule.join(', ')}]</ListGroupItem>)}
+            </ListGroup>
+        )
+    }
+
     renderImageLoading() {
         return (
             <Icon name="spinner" spin className="loading" />
@@ -111,13 +124,19 @@ export default class CTItemPage extends Component {
     renderPage(item) {
         return (
             <Row>
-            <Col sm={11} lg={8} >
+            <Col xs={12} sm={8} lg={7} >
                 { (item.image) ?
                   this.renderImageViewer(item)
                   :
                   this.renderImageLoading()
                 }
             </Col>
+            { item.nodules ?
+                <Col xs={12} sm={4}>
+                    { this.renderNodulesList(item) }
+                </Col>
+              : null
+            }
             </Row>
         )
     }

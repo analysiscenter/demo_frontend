@@ -131,3 +131,18 @@ body {
 .page.item .image-viewer .loading {
 	font-size: 3rem;
 }
+
+.page.ct.item .list-group {
+	margin-top: 1.5rem;
+	font-size: 0.5rem;
+	cursor: pointer;
+	user-select: none;
+}
+
+.page.ct.item .list-group-item {
+	outline: none;
+}
+
+.page.ct.item .list-group-item:hover {
+	background: #eeeeee;
+}
