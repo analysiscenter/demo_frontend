@@ -25,36 +25,45 @@ export default class CTItemPage extends Component {
     }
 
 
-    renderImageViewer(item) {
-        const imageData = this.props.ct_store.getImageSlice(item.id, this.state.currentSlice)
-
-        const resize = 5
+    drawImage(image, resizeFactor) {
         const canvas = document.createElement('canvas')
-        canvas.width = item.image[0][0].length
-        canvas.height = item.image[0].length
+        canvas.width = image.width
+        canvas.height = image.height
         const ctx = canvas.getContext('2d')
-        ctx.putImageData(imageData, 0, 0)
+        ctx.putImageData(image, 0, 0)
 
         const canvas2 = document.createElement('canvas')
-        canvas2.width = canvas.width * resize
-        canvas2.height = canvas.height * resize
+        canvas2.width = canvas.width * resizeFactor
+        canvas2.height = canvas.height * resizeFactor
         const ctx2 = canvas2.getContext('2d');
         ctx2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height)
+        return canvas2
+    }
 
-        const div_style = { width: canvas2.width + 40 }
-        const slider_style = { height: canvas2.height }
+    renderImageViewer(item) {
+        const resizeFactor = 5
+
+        const imageData = this.props.ct_store.getImageSlice(item.id, this.state.currentSlice)
+        const scan_image = this.drawImage(imageData, resizeFactor)
+        let mask_image
+        if(item.mask){
+            const maskData = this.props.ct_store.getMaskSlice(item.id, this.state.currentSlice)
+            mask_image = this.drawImage(maskData, resizeFactor)
+        }
+
+        const div_style = { width: scan_image.width + 40 }
+        const slider_style = { height: scan_image.height }
 
         return (
             <div className="image-viewer" style={div_style}>
-                <Stage width={canvas2.width} height={canvas2.height} style={{float:"left"}}>
-                    <Layer>
-                        <Image image={canvas2} />
-                    </Layer>
+                <Stage width={scan_image.width} height={scan_image.height} style={{float:"left"}}>
+                    <Layer><Image image={scan_image} /></Layer>
+                    { item.mask ? <Layer><Image image={mask_image} /></Layer> : null}
                 </Stage>
                 <div style={slider_style}>
                     <ReactBootstrapSlider value={this.state.currentSlice} change={this.onSliceChange.bind(this)} min={0} max={31} orientation="vertical" />
                 </div>
-                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.inference}>
+                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.mask}>
                     { item.waitingDecision ?
                         <Icon name="spinner" spin />
                       :
