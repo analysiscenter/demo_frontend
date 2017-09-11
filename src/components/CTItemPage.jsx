@@ -5,7 +5,7 @@ import { ReactBootstrapSlider } from 'react-bootstrap-slider'
 import Toggle from 'react-bootstrap-toggle'
 import { Icon } from 'react-fa'
 import { inject, observer } from 'mobx-react'
-import { Layer, Stage, Image, Rect } from 'react-konva'
+import { Layer, Stage, Image, Circle } from 'react-konva'
 
 
 @inject("ct_store")
@@ -50,18 +50,32 @@ export default class CTItemPage extends Component {
     }
 
     renderImageViewer(item) {
+        const self = this
         const resizeFactor = 5
 
         const imageData = this.props.ct_store.getImageSlice(item.id, this.state.currentSlice)
         const scan_image = this.drawImage(imageData, resizeFactor)
         let mask_image
-        if(item.mask){
+        if (item.mask){
             const maskData = this.props.ct_store.getMaskSlice(item.id, this.state.currentSlice)
             mask_image = this.drawImage(maskData, resizeFactor)
         }
 
         const div_style = { width: scan_image.width + 40 }
         const slider_style = { height: scan_image.height }
+
+        let nodules
+        if (item.nodules){
+            nodules = item.nodules.map(function(nodule, ix){
+                if ((self.state.currentSlice > nodule[0] - nodule[3] / 2) & (self.state.currentSlice < nodule[0] + nodule[3] / 2)) {
+                    const radius = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[3]/2)) * nodule [3]
+                    return <Circle key={ix} x={nodule[1]*resizeFactor}
+                                            y={nodule[2]*resizeFactor}
+                                            radius={radius*resizeFactor} fill='green' opacity={0.5} />
+                } else
+                    return null
+            })
+        }
 
         return (
             <div className="image-viewer" style={div_style}>
@@ -72,6 +86,7 @@ export default class CTItemPage extends Component {
                 <Stage width={scan_image.width} height={scan_image.height} style={{float:"left"}}>
                     <Layer><Image image={scan_image} /></Layer>
                     { this.state.maskOn & (item.mask !== null) ? <Layer><Image image={mask_image} /></Layer> : null}
+                    { this.state.nodulesOn & (item.nodules !== null) ? <Layer>{nodules}</Layer> : null}
                 </Stage>
                 <div style={slider_style}>
                     <ReactBootstrapSlider value={this.state.currentSlice} change={this.onSliceChange.bind(this)} min={0} max={31} orientation="vertical" />
