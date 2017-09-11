@@ -3892,6 +3892,14 @@ react-bootstrap-slider@^2.0.1:
     react "^15.6.1"
     react-dom "^15.6.1"
 
+react-bootstrap-toggle@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-toggle/-/react-bootstrap-toggle-2.0.8.tgz#04e951527ffdd3b2a18de753b4992fa2a7d25792"
+  dependencies:
+    prop-types "^15.5.10"
+    react "^15.4.2"
+    react-dom "^15.4.2"
+
 react-bootstrap@^0.31.2:
   version "0.31.2"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.31.2.tgz#f59184676ecedfc4c572d29ffdd6f9126ea8fe6a"
@@ -3908,7 +3916,7 @@ react-bootstrap@^0.31.2:
     uncontrollable "^4.1.0"
     warning "^3.0.0"
 
-react-dom@^15.6.1:
+react-dom@^15.4.2, react-dom@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
   dependencies:
@@ -3972,7 +3980,7 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react@^15.6.1:
+react@^15.4.2, react@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:

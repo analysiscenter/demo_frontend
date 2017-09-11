@@ -106,6 +106,18 @@ body {
 	text-align: center;
 }
 
+.page.item .image-viewer .btn.toggle {
+	margin: 0.2rem 0.5rem;
+}
+
+.page.item .image-viewer div.btn.toggle:nth-child(1) {
+	margin-left: 0;
+}
+
+.page.item .image-viewer .btn.toggle .off {
+	text-decoration: line-through;
+}
+
 .page.item .image-viewer .slider {
 	height: 100%;
 }
