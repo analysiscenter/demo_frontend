@@ -24,10 +24,10 @@ export default class ActionButton extends Component {
         }
         return (
             <div>
-                <Button bsStyle="primary"
+                <Button bsStyle="primary" className="get-ecg-inference"
                         disabled={isRunning || isProcessed}
                         onClick={isProcessed ? null : this.handleClick }>
-                    {isRunning ? 'Analysis is in progress...' : isProcessed ? 'Analysis is done' : 'Run analysis'}
+                    {isRunning ? 'Analysis in progress' : isProcessed ? 'Analysis is done' : 'Run analysis'}
                 </Button>
             </div>
         );

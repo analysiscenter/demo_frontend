@@ -16,40 +16,37 @@ export default class EcgPatientResultCharts extends Component {
         return (
             <div>               
                 <Grid fluid>
+                    <Row className="heart_rate">
+                        <Col xs={4}>
+                            <Col xs={6}>
+                                <Icon name='heartbeat' className="heart_rate icon"></Icon>
+                            </Col> 
+                            <Col xs={6} className="heart_rate left">
+                                <span className="heart_rate value">
+                                    {heart_rate ? heart_rate + ' bpm' : '\u2014 bpm'}
+                                </span>
+                            </Col>
+                        </Col>                             
+                        <Col xs={4}>
+                            <ChangingProgressbar percentages={Array.from(Array(af_prob ? Math.round( 100*af_prob ) + 1 : 1).keys())}
+                                            textForPercentage={(percentage) => 
+                                            `${percentage}%`
+                                            } />
+                        </Col>  
+                        <Col xs={4}>
+                            <BarChart pid={this.props.pid}/>
+                        </Col>                                
+                    </Row>
                     <Row>
                         <Col xs={4}>
-                            <Row>
-                                <Col xs={6}>
-                                    <Icon name='heartbeat'></Icon>
-                                </Col> 
-                                <Col xs={6}>
-                                    {heart_rate ? heart_rate + ' bpm' : null}
-                                </Col>                                
-                            </Row>
-                            <Row>
-                                Heart beat rate
-                            </Row>
-                        </Col>
+                            <span>Heart beat rate</span>
+                        </Col> 
                         <Col xs={4}>
-                            <Row>
-                                <ChangingProgressbar percentages={Array.from(Array(af_prob ? Math.round( 100*af_prob ) + 1 : 1).keys())}
-                                                    textForPercentage={(percentage) => 
-                                                    `${percentage}%`
-                                                    } />
-                            </Row>
-                            <Row>
-                                Arrythmia probability
-                            </Row>
-                            
-                        </Col>
+                            <span>Arrythmia probabitily</span>
+                        </Col> 
                         <Col xs={4}>
-                            <Row>
-                                <BarChart pid={this.props.pid}/>
-                            </Row>
-                            <Row>
-                                Signal segment length
-                            </Row>
-                        </Col>    
+                            <span>Segment length</span>
+                        </Col> 
                     </Row>
                 </Grid>
             </div>

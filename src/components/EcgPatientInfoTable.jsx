@@ -9,15 +9,19 @@ export default class EcgPatientInfoTable extends Component {
     render() {
         let frequency = this.props.ecg_store.items.get(this.props.pid).frequency;
         let name = this.props.ecg_store.items.get(this.props.pid).name;
+        let units = this.props.ecg_store.items.get(this.props.pid).units;
         return (
             <div>               
                 <Grid fluid>
                     <Row>
                         <Col xs={2}>
-                            Name: {name}
+                            <span className='page item info-table'>Name: {name}</span>
                         </Col>
                         <Col xs={2}>
-                            Sample rate (Hz): {frequency}
+                            <span className='page item info-table'>Sample rate (Hz): {frequency}</span>
+                        </Col>
+                        <Col xs={2}>
+                            <span className='page item info-table'>Units: {units}</span>
                         </Col>
                     </Row>
                 </Grid>

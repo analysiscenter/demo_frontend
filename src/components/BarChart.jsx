@@ -9,10 +9,18 @@ const options = {
     scales: {
         yAxes: [{
             ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                fontSize: 18
+            }
+        }],
+        xAxes: [{
+            ticks: {
+                fontSize: 18
             }
         }]
-    }
+    },
+    maintainAspectRatio: false,
+    responsive: true
 };
 
 @inject("ecg_store")
@@ -32,7 +40,7 @@ export default class BarChart extends Component {
             ],
         };
         return (
-            <div>            
+            <div className='page item barChart'>            
                 <Bar data={data} options={options}/>
             </div>
         );

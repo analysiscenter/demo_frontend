@@ -6,16 +6,16 @@ import { Icon } from 'react-fa'
 import { inject, observer } from 'mobx-react'
 
 
-@inject("ecg_store")
+@inject("ct_store")
 @observer
-export default class ECGPage extends Component {
-   renderItem(item) {
+export default class CTPage extends Component {
+    renderItem(item) {
         return (
         <Col xs={6} sm={4} md={3} lg={2} key={item.id}>
             <div className="item">
             <Link to={this.props.match.path + "/" + item.id}>
                 <div>
-                    <Icon name="heartbeat"/><br/>
+                    <Icon name="universal-access"/><br/>
                     <span className="name">{item.name}</span>
                 </div>
             </Link>
@@ -27,10 +27,10 @@ export default class ECGPage extends Component {
     render() {
         const self = this
         return (
-        <div className="page ecg">
+        <div className="page ct">
             <Grid fluid>
             <Row>
-                { this.props.ecg_store.items.values().map( item => self.renderItem(item) ) }
+                { this.props.ct_store.items.values().map( item => self.renderItem(item) ) }
             </Row>
             </Grid>
         </div>
