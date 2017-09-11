@@ -11,7 +11,7 @@ body {
 	margin: 0;
 	padding-top: 0;
 	background: #337ab7;
-	font-size: 1rem;
+	font-size: 0.75rem;
 	border: 0;
 	min-height: 2rem;
 	padding-left: 0.3rem;
@@ -63,6 +63,14 @@ body {
     font-size: 10rem;
 }
 
+.page.item {
+	padding-top: 0;
+}
+
+.page.loading {
+	font-size: 3rem;
+}
+
 .page .item {
 	color: #337ab7;
 	text-align: center;
@@ -89,3 +97,19 @@ body {
 	background: #eeeeee;
 }
 
+.page.item h2 {
+	font-size: 1rem;
+	margin-top: 0.5rem;
+}
+
+.page.item .image-viewer {
+	text-align: center;
+}
+
+.page.item .image-viewer .slider {
+	height: 100%;
+}
+
+.page.item .image-viewer .loading {
+	font-size: 3rem;
+}

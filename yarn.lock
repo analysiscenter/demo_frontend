@@ -216,13 +216,6 @@ aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
-axios@^0.16.2:
-  version "0.16.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.16.2.tgz#ba4f92f17167dfbab40983785454b9ac149c3c6d"
-  dependencies:
-    follow-redirects "^1.2.3"
-    is-buffer "^1.1.5"
-
 babel-code-frame@^6.11.0, babel-code-frame@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
@@ -1035,6 +1028,14 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
+bootstrap-slider@^9.8.0:
+  version "9.8.1"
+  resolved "https://registry.yarnpkg.com/bootstrap-slider/-/bootstrap-slider-9.8.1.tgz#8667d81ffb261538df776fc6f7bd77ec1990fc6e"
+
+bootstrap@^3.3.7:
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
+
 brace-expansion@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.8.tgz#c07b211c7c952ec1f8efd51a77ef0d1d3990a292"
@@ -1611,7 +1612,7 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
-debug@2.6.8, debug@^2.2.0, debug@^2.4.5, debug@^2.6.6, debug@^2.6.8, debug@~2.6.4:
+debug@2.6.8, debug@^2.2.0, debug@^2.6.6, debug@^2.6.8, debug@~2.6.4:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
@@ -1779,6 +1780,10 @@ elliptic@^6.0.0:
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
+
+empty-module@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/empty-module/-/empty-module-0.0.2.tgz#13b4dd8d4afeddd35e50c18dcd788c51087f1545"
 
 encodeurl@~1.0.1:
   version "1.0.1"
@@ -2053,6 +2058,18 @@ faye-websocket@~0.11.0:
   dependencies:
     websocket-driver ">=0.5.1"
 
+fbjs@^0.8.14:
+  version "0.8.15"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.15.tgz#4f0695fdfcc16c37c0b07facec8cb4c4091685b9"
+  dependencies:
+    core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.9"
+
 fbjs@^0.8.9:
   version "0.8.14"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.14.tgz#d1dbe2be254c35a91e09f31f9cd50a40b2a0ed1c"
@@ -2121,12 +2138,6 @@ find-up@^2.0.0, find-up@^2.1.0:
 flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
-
-follow-redirects@^1.2.3:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.2.4.tgz#355e8f4d16876b43f577b0d5ce2668b9723214ea"
-  dependencies:
-    debug "^2.4.5"
 
 font-awesome@^4.3.0:
   version "4.7.0"
@@ -2810,6 +2821,10 @@ kind-of@^4.0.0:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-4.0.0.tgz#20813df3d712928b207378691a45066fae72dd57"
   dependencies:
     is-buffer "^1.1.5"
+
+konva@^1.6.8:
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/konva/-/konva-1.6.8.tgz#4fda5670211ff25f07f261b8736069934f32e084"
 
 lazy-cache@^1.0.3:
   version "1.0.4"
@@ -3867,6 +3882,16 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-bootstrap-slider@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-slider/-/react-bootstrap-slider-2.0.1.tgz#2a4a9014f97ba997f6c62a3c758d88e1059a19b0"
+  dependencies:
+    bootstrap "^3.3.7"
+    bootstrap-slider "^9.8.0"
+    prop-types "^15.5.10"
+    react "^15.6.1"
+    react-dom "^15.6.1"
+
 react-bootstrap@^0.31.2:
   version "0.31.2"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.31.2.tgz#f59184676ecedfc4c572d29ffdd6f9126ea8fe6a"
@@ -3898,6 +3923,15 @@ react-fa@^4.2.0:
   dependencies:
     font-awesome "^4.3.0"
     prop-types "^15.5.8"
+
+react-konva@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/react-konva/-/react-konva-1.1.4.tgz#35e49e57097cae085e0fc7aeb7748ee6a993c7aa"
+  dependencies:
+    create-react-class "^15.6.0"
+    fbjs "^0.8.14"
+    object-assign "^4.1.1"
+    prop-types "^15.5.10"
 
 react-overlays@^0.7.0:
   version "0.7.0"

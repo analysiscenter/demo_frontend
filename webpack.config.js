@@ -15,6 +15,12 @@ module.exports = {
     filename: 'index.js'
   },
 
+  resolve: {
+    alias: {
+      "jquery$": "empty-module"
+    }
+  },
+
   module: {
     loaders: [
       { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },

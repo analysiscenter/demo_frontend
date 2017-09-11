@@ -1,10 +1,10 @@
-import { observable, autorun, action, extendObservable } from 'mobx'
+import { observable, autorun, computed, action, extendObservable } from 'mobx'
 
 import { API_Events } from './const'
 
 
 const item_template = {
-    id: null, name: null, image: null, mask: null, decision:null
+    id: null, name: null, image:null, imageBitmap:null, mask: null, decision:null
 }
 
 
@@ -49,5 +49,22 @@ export default class CT_Store {
 
     getInference(id) {
         this.server.send(API_Events.CT_GET_INFERENCE, {id: id})
+    }
+
+    getImageSlice(id, slice_no) {
+        const item = this.items.get(id)
+        const sourceImage = item.image[slice_no].peek()
+        const bitmapImage = new Uint8ClampedArray(sourceImage.length * sourceImage[0].length * 4)
+
+        for(let i=0; i< sourceImage.length; i++){
+            for(let j=0; j< sourceImage[i].length; j++){
+                const pos = i*sourceImage[i].length*4 + j*4
+                bitmapImage[pos + 0] = sourceImage[i][j]
+                bitmapImage[pos + 1] = sourceImage[i][j]
+                bitmapImage[pos + 2] = sourceImage[i][j]
+                bitmapImage[pos + 3] = 255
+            }
+        }
+        return new ImageData(bitmapImage, sourceImage[0].length, sourceImage.length)
     }
 }
