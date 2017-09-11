@@ -110,6 +110,12 @@ body {
 	height: 100%;
 }
 
+.page.item .image-viewer button.get-inference {
+	margin-top: 0.3rem;
+	width: 5rem;
+	height: 2rem;
+}
+
 .page.item .image-viewer .loading {
 	font-size: 3rem;
 }

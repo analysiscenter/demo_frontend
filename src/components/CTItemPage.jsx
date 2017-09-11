@@ -20,6 +20,11 @@ export default class CTItemPage extends Component {
         this.setState({currentSlice: event.target.value})
     }
 
+    handleInference() {
+        this.props.ct_store.getInference(this.props.match.params.id)
+    }
+
+
     renderImageViewer(item) {
         const imageData = this.props.ct_store.getImageSlice(item.id, this.state.currentSlice)
 
@@ -41,14 +46,21 @@ export default class CTItemPage extends Component {
 
         return (
             <div className="image-viewer" style={div_style}>
-            <Stage width={canvas2.width} height={canvas2.height} style={{float:"left"}}>
-                <Layer>
-                    <Image image={canvas2} />
-                </Layer>
-            </Stage>
-            <div style={slider_style}>
-                <ReactBootstrapSlider value={this.state.currentSlice} change={this.onSliceChange.bind(this)} min={0} max={31} orientation="vertical" />
-            </div>
+                <Stage width={canvas2.width} height={canvas2.height} style={{float:"left"}}>
+                    <Layer>
+                        <Image image={canvas2} />
+                    </Layer>
+                </Stage>
+                <div style={slider_style}>
+                    <ReactBootstrapSlider value={this.state.currentSlice} change={this.onSliceChange.bind(this)} min={0} max={31} orientation="vertical" />
+                </div>
+                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.inference}>
+                    { item.waitingDecision ?
+                        <Icon name="spinner" spin />
+                      :
+                        "Get prediction"
+                    }
+                </Button>
             </div>
         )
     }

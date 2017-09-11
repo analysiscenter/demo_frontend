@@ -4,7 +4,7 @@ import { API_Events } from './const'
 
 
 const item_template = {
-    id: null, name: null, image:null, imageBitmap:null, mask: null, decision:null
+    id: null, name: null, image:null, imageBitmap:null, mask: null, decision:null, waitingDecision:false
 }
 
 
@@ -40,6 +40,7 @@ export default class CT_Store {
 
     @action
     onGotInference(data, meta){
+        this.items.get(data.id).waitingDecision = false
         extendObservable(this.items.get(data.id), data)
     }
 
@@ -47,7 +48,9 @@ export default class CT_Store {
         this.server.send(API_Events.CT_GET_ITEM_DATA, {id: id})
     }
 
+    @action
     getInference(id) {
+        this.items.get(id).waitingDecision = true
         this.server.send(API_Events.CT_GET_INFERENCE, {id: id})
     }
 
