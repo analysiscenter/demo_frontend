@@ -13,7 +13,9 @@ const item_template = {
    units: null,
    lead: null,
    af_prob: null,
-   inference: null
+   inference: null,
+   waitingData: false,
+   waitingInference: false
 }
 
 
@@ -45,18 +47,33 @@ export default class ECG_Store {
     @action
     onGotItemData(data, meta){
         extendObservable(this.items.get(data.id), data)
+        this.items.get(data.id).waitingData = false
     }
 
     @action
     onGotInference(data, meta){
         extendObservable(this.items.get(data.id), data)
+        this.items.get(data.id).waitingInference = false
     }
 
     getItemData(id) {
-        this.server.send(API_Events.ECG_GET_ITEM_DATA, {id: id})
+        if (!this.items.get(id).waitingData){
+            this.items.get(id).waitingData = true
+            this.server.send(API_Events.ECG_GET_ITEM_DATA, {id: id})
+        }
     }
 
     getInference(id) {
-        this.server.send(API_Events.ECG_GET_INFERENCE, {id: id})
+        if (!this.items.get(id).waitingInference){
+            this.items.get(id).waitingInference = true
+            this.server.send(API_Events.ECG_GET_INFERENCE, {id: id})
+        }
+    }
+
+    get(id) {
+        const item = this.items.get(id)
+        if (item.signal == null)
+            this.getItemData(id)
+        return item
     }
 }

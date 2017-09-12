@@ -97,6 +97,10 @@ body {
 	background: #eeeeee;
 }
 
+.page.item .row .row {
+	margin: 0;
+}
+
 .page.item h2 {
 	font-size: 1rem;
 	margin-top: 0.5rem;
@@ -178,9 +182,41 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 }
 
 .page.ecg.item .heart-rate .fa {
 	font-size: 2rem;
 	margin-right: 0.2rem;
+}
+
+.page.ecg.item .heart-rate .fa + span {
+	font-size: 1rem;
+}
+
+.CircularProgressbar {
+  /*
+   * This fixes an issue where the CircularProgressbar svg has
+   * 0 width inside a "display: flex" container, and thus not visible.
+   *
+   * If you're not using "display: flex", you can remove this style.
+   */
+  width: 100%;
+}
+
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: #3e98c7;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease 0s;
+}
+
+.CircularProgressbar .CircularProgressbar-trail {
+  stroke: #d6d6d6;
+}
+
+.CircularProgressbar .CircularProgressbar-text {
+  fill: #3e98c7;
+  font-size: 1rem;
+  dominant-baseline: middle;
+  text-anchor: middle;
 }

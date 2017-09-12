@@ -41,7 +41,6 @@ function MakePlot(signal, fs, annotation, div_id) {
 
     var shapes = [];
     if (annotation) {
-        console.log("make plot", annotation.slice())
         var colors = ['red', 'orange', 'blue'];
         for (var k = 0; k < 3; k++) {
             var interval = annotation[k].slice()
@@ -73,10 +72,7 @@ function MakePlot(signal, fs, annotation, div_id) {
         xaxis: {
         },
         yaxis: {
-            title: 'Amplitude (mV)',
-            titlefont: {
-                weight: 'lighter'
-            }
+            title: 'Amplitude (mV)'
         },
         font: {
            family: 'Roboto Condensed',

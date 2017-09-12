@@ -6,7 +6,7 @@ import { inject, observer } from 'mobx-react'
 
 import LoadingSpinner from './LoadingSpinner.jsx'
 import EcgSignalPlot from './EcgSignalPlot.jsx';
-import EcgPatientResultCharts from './EcgPatientResultCharts.jsx'
+import EcgItemResults from './EcgItemResults.jsx'
 
 
 @inject("ecg_store")
@@ -14,8 +14,6 @@ import EcgPatientResultCharts from './EcgPatientResultCharts.jsx'
 export default class CTItemPage extends Component {
     constructor(props) {
         super(props)
-        props.ecg_store.getItemData(props.match.params.id)
-        this.state = {}
     }
 
     handleInference() {
@@ -25,21 +23,27 @@ export default class CTItemPage extends Component {
     renderPage(item) {
         return (
         <Row>
-            <EcgSignalPlot signal={item.signal} fs={item.frequency} annotation={item.annotation} />
+            { item.signal ?
+                <EcgSignalPlot signal={item.signal} fs={item.frequency} annotation={item.annotation} />
+              :
+              null
+            }
             { item.af_prob ?
                 <Row>
-                    <EcgPatientResultCharts pid={item.id}/>
+                    <EcgItemResults pid={item.id}/>
                 </Row>
             : null
             }
 
-            <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.annotation}>
-                { item.waitingDecision ?
-                    <Icon name="spinner" spin />
-                  :
-                    "Predict"
-                }
-            </Button>
+            { item.af_prob ? null :
+                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.annotation}>
+                    { item.waitingInference ?
+                        <Icon name="spinner" spin />
+                      :
+                        "Click to predict"
+                    }
+                </Button>
+            }
         </Row>
         )
     }
@@ -49,7 +53,7 @@ export default class CTItemPage extends Component {
     }
 
     render() {
-        const item = this.props.ecg_store.items.get(this.props.match.params.id)
+        const item = this.props.ecg_store.get(this.props.match.params.id)
 
         return (
         <div className="page ecg item">

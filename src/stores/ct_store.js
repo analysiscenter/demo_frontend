@@ -4,7 +4,7 @@ import { API_Events } from './const'
 
 
 const item_template = {
-    id: null, name: null, image:null, mask: null, nodules:null, decision:null, waitingDecision:false
+    id: null, name: null, image:null, mask: null, nodules:null, decision:null, waitingData: false, waitingInference: false
 }
 
 
@@ -36,22 +36,35 @@ export default class CT_Store {
     @action
     onGotItemData(data, meta){
         extendObservable(this.items.get(data.id), data)
+        this.items.get(data.id).waitingData = false
     }
 
     @action
     onGotInference(data, meta){
-        this.items.get(data.id).waitingDecision = false
         extendObservable(this.items.get(data.id), data)
+        this.items.get(data.id).waitingInference = false
     }
 
     getItemData(id) {
-        this.server.send(API_Events.CT_GET_ITEM_DATA, {id: id})
+        if (!this.items.get(id).waitingData){
+            this.items.get(id).waitingData = true
+            this.server.send(API_Events.CT_GET_ITEM_DATA, {id: id})
+        }
     }
 
     @action
     getInference(id) {
-        this.items.get(id).waitingDecision = true
-        this.server.send(API_Events.CT_GET_INFERENCE, {id: id})
+        if (!this.items.get(id).waitingInference){
+            this.items.get(id).waitingInference = true
+            this.server.send(API_Events.CT_GET_INFERENCE, {id: id})
+        }
+    }
+
+    get(id) {
+        const item = this.items.get(id)
+        if (item.image == null)
+            this.getItemData(id)
+        return item
     }
 
     makeImage(imageData, color='grey', alpha=1){
