@@ -11,8 +11,15 @@ import ChangingProgressbar from './ChangingProgressbar.jsx'
 @observer
 export default class EcgPatientResultCharts extends Component {
     render() {
-        let heart_rate = this.props.ecg_store.items.get(this.props.pid).heart_rate;
-        let af_prob = this.props.ecg_store.items.get(this.props.pid).af_prob;
+        let item = this.props.ecg_store.items.get(this.props.pid)
+        if (item.inference !== null) {
+            var heart_rate = item.inference.heart_rate;
+            var af_prob = item.inference.af_prob;
+        }
+        else {
+            var heart_rate = null;
+            var af_prob = null;
+        } 
         return (
             <div>               
                 <Grid fluid>

@@ -40,7 +40,16 @@ export default class ECGItemPage extends Component {
     renderPage() {
         let signal = this.props.ecg_store.items.get(this.state.pid).signal;
         let frequency = this.props.ecg_store.items.get(this.state.pid).frequency;
-        let annotation = this.props.ecg_store.items.get(this.state.pid).annotation;
+        if (this.props.ecg_store.items.get(this.state.pid).inference !== null )
+        {
+            var annotation = [];
+            annotation.push(this.props.ecg_store.items.get(this.state.pid).inference.qrs_segments);
+            annotation.push(this.props.ecg_store.items.get(this.state.pid).inference.p_segments);
+            annotation.push(this.props.ecg_store.items.get(this.state.pid).inference.t_segments);
+        }
+        else {
+            var annotation = null;
+        }
         
         return (
             <div className='page item'>                

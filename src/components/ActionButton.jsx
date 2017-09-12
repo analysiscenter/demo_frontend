@@ -18,7 +18,7 @@ export default class ActionButton extends Component {
 
     render() {
         let isRunning = this.state.isRunning;
-        let isProcessed = this.props.ecg_store.items.get(this.props.pid).annotation !== null;
+        let isProcessed = this.props.ecg_store.items.get(this.props.pid).inference !== null;
         if (isProcessed) {
             isRunning = false;
         }

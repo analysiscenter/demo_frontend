@@ -27,9 +27,18 @@ const options = {
 @observer
 export default class BarChart extends Component {
     render() {
-        let qrs_t = this.props.ecg_store.items.get(this.props.pid).qrs_t;
-        let t_wave = this.props.ecg_store.items.get(this.props.pid).t_wave;
-        let p_wave = this.props.ecg_store.items.get(this.props.pid).p_wave;
+        let item = this.props.ecg_store.items.get(this.props.pid);
+        if (item.inference !== null) {
+            var qrs_t = item.inference.qrs_interval;
+            var t_wave = item.inference.qt_interval;
+            var p_wave = item.inference.pq_interval;
+        }
+        else {
+            var qrs_t = null;
+            var t_wave = null;
+            var p_wave = null;
+        }
+        
         let data = {
             labels: ['QRS segment', 'T wave', 'P wave'],
             datasets: [

@@ -13,13 +13,16 @@ const item_template = {
     units: null,
     lead: null,
     af_prob: null,
-    heart_rate: null,
-    qrs_t: null,
-    p_wave: null,
-    t_wave: null,
-    annotation : null
+    inference: null
 }
 
+// heart_rate: null,
+    // qrs_interval: null,
+    // pq_interval: null,
+    // qt_interval: null,
+    // p_segments : null,
+    // t_segments: null,
+    // qrs_segments: null
 
 export default class ECG_Store {
     server = null
