@@ -139,6 +139,11 @@ body {
 	font-weight: 100;
 }
 
+.page.item button.get-inference .fa {
+	margin-right: 0.2rem;
+}
+
+
 .page.item .image-viewer .loading {
 	font-size: 3rem;
 }
@@ -201,7 +206,7 @@ body {
    *
    * If you're not using "display: flex", you can remove this style.
    */
-  width: 100%;
+  width: 75%;
 }
 
 .CircularProgressbar .CircularProgressbar-path {
@@ -216,7 +221,7 @@ body {
 
 .CircularProgressbar .CircularProgressbar-text {
   fill: #3e98c7;
-  font-size: 1rem;
+  font-size: 0.9rem;
   dominant-baseline: middle;
   text-anchor: middle;
 }

@@ -134,7 +134,7 @@ export default class CTItemPage extends Component {
                 { item.waitingInference ?
                     <Icon name="spinner" spin />
                   :
-                    "Click to predict"
+                    <span><Icon name="check-circle-o" /><span>Click to predict</span></span>
                 }
             </Button>
             </Row>
