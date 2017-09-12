@@ -4,7 +4,16 @@ import { API_Events } from './const'
 
 
 const item_template = {
-    id: null, name: null, signal: null, inference: null
+   id: null,
+   name: null,
+   signal: null,
+   frequency: null,
+   age: null,
+   date: null,
+   units: null,
+   lead: null,
+   af_prob: null,
+   inference: null
 }
 
 

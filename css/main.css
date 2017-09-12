@@ -122,9 +122,9 @@ body {
 	height: 100%;
 }
 
-.page.item .image-viewer button.get-inference {
+.page.item button.get-inference {
 	position: absolute;
-	top: -4rem;
+	top: 0;
 	left: 15rem;
 	padding: 0;
 	margin-top: 0.4rem;
@@ -152,4 +152,31 @@ body {
 
 .page.ct.item .list-group-item:hover {
 	background: #eeeeee;
+}
+
+.page.ecg.item .heart {
+	text-align: center;
+	margin-top: -1.5rem;
+	font-size: 0.75rem;
+	font-weight: 100;
+}
+
+.page.ecg.item .heart h3 {
+	font-size: 0.75rem;
+	font-weight: 100;
+}
+
+.page.ecg.item #plot .xtitle {
+	font-family: "Roboto Condensed", sans-serif;
+	font-size: 0.3rem;
+	font-weight: 100;
+}
+
+.page.ecg.item .heart-rate {
+	color: #dd3333;
+}
+
+.page.ecg.item .heart-rate .fa {
+	font-size: 2rem;
+	margin-right: 0.2rem;
 }

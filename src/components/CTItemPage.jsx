@@ -91,13 +91,6 @@ export default class CTItemPage extends Component {
                 <div style={slider_style}>
                     <ReactBootstrapSlider value={this.state.currentSlice} change={this.onSliceChange.bind(this)} min={0} max={31} orientation="vertical" />
                 </div>
-                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.mask}>
-                    { item.waitingDecision ?
-                        <Icon name="spinner" spin />
-                      :
-                        "Predict"
-                    }
-                </Button>
             </div>
         )
     }
@@ -137,6 +130,13 @@ export default class CTItemPage extends Component {
                 </Col>
               : null
             }
+            <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.mask}>
+                { item.waitingDecision ?
+                    <Icon name="spinner" spin />
+                  :
+                    "Predict"
+                }
+            </Button>
             </Row>
         )
     }
