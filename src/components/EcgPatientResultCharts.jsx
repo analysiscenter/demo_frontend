@@ -30,15 +30,14 @@ export default class EcgPatientResultCharts extends Component {
                             </Col> 
                             <Col xs={6} className="heart_rate left">
                                 <span className="heart_rate value">
-                                    {heart_rate ? heart_rate + ' bpm' : '\u2014 bpm'}
+                                    {heart_rate ? Math.round(heart_rate) + ' bpm' : '\u2014 bpm'}
                                 </span>
                             </Col>
                         </Col>                             
                         <Col xs={4}>
                             <ChangingProgressbar percentages={Array.from(Array(af_prob ? Math.round( 100*af_prob ) + 1 : 1).keys())}
                                             textForPercentage={(percentage) => 
-                                            `${percentage}%`
-                                            } />
+                                            `${percentage}%`} interval = {1000 / Math.round( 100*af_prob )}/>
                         </Col>  
                         <Col xs={4}>
                             <BarChart pid={this.props.pid}/>
@@ -49,7 +48,7 @@ export default class EcgPatientResultCharts extends Component {
                             <span>Heart beat rate</span>
                         </Col> 
                         <Col xs={4}>
-                            <span>Arrythmia probabitily</span>
+                            <span>AF probabitily</span>
                         </Col> 
                         <Col xs={4}>
                             <span>Segment length</span>
