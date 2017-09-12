@@ -71,10 +71,12 @@ function MakePlot(signal, fs, annotation, div_id) {
            t: -0,
         },
         xaxis: {
-            title: 'Time (s)'
         },
         yaxis: {
-            title: 'Amplitude (mV)'
+            title: 'Amplitude (mV)',
+            titlefont: {
+                weight: 'lighter'
+            }
         },
         font: {
            family: 'Roboto Condensed',

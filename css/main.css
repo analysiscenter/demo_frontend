@@ -156,7 +156,8 @@ body {
 
 .page.ecg.item .heart {
 	text-align: center;
-	margin-top: -1.5rem;
+	margin-top: -2rem;
+	margin-right: 15px;
 	font-size: 0.75rem;
 	font-weight: 100;
 }
@@ -174,6 +175,9 @@ body {
 
 .page.ecg.item .heart-rate {
 	color: #dd3333;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .page.ecg.item .heart-rate .fa {
