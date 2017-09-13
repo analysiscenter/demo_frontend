@@ -61,8 +61,9 @@ export default class CTItemPage extends Component {
             mask_image = this.drawImage(maskData, resizeFactor)
         }
 
-        const div_style = { width: scan_image.width + 40 }
+        const viewer_style = { width: "90%" }
         const slider_style = { height: scan_image.height }
+
 
         let nodules
         if (item.nodules){
@@ -78,16 +79,18 @@ export default class CTItemPage extends Component {
         }
 
         return (
-            <div className="image-viewer" style={div_style}>
-                <Toggle active={this.state.maskOn} onClick={this.handleMaskToggle.bind(this)} disabled={!item.mask}
-                        onstyle="danger" on={<span className="on">mask</span>} off={<span className="off">mask</span>} />
-                <Toggle active={this.state.nodulesOn} onClick={this.handleNodulesToggle.bind(this)} disabled={!item.nodules}
-                        onstyle="success" on={<span className="on">nodules</span>} off={<span className="off">nodules</span>} />
-                <Stage width={scan_image.width} height={scan_image.height} style={{float:"left"}}>
-                    <Layer><Image image={scan_image} /></Layer>
-                    { this.state.maskOn & (item.mask !== null) ? <Layer><Image image={mask_image} /></Layer> : null}
-                    { this.state.nodulesOn & (item.nodules !== null) ? <Layer>{nodules}</Layer> : null}
-                </Stage>
+            <div className="image-viewer">
+                <div className="image-viewer-with-toggles">
+                    <Toggle active={this.state.maskOn} onClick={this.handleMaskToggle.bind(this)} disabled={!item.mask}
+                            onstyle="danger" on={<span className="on">mask</span>} off={<span className="off">mask</span>} />
+                    <Toggle active={this.state.nodulesOn} onClick={this.handleNodulesToggle.bind(this)} disabled={!item.nodules}
+                            onstyle="success" on={<span className="on">nodules</span>} off={<span className="off">nodules</span>} />
+                    <Stage width={scan_image.width} height={scan_image.height}>
+                        <Layer><Image image={scan_image} /></Layer>
+                        { this.state.maskOn & (item.mask !== null) ? <Layer><Image image={mask_image} /></Layer> : null}
+                        { this.state.nodulesOn & (item.nodules !== null) ? <Layer>{nodules}</Layer> : null}
+                    </Stage>
+                </div>
                 <div style={slider_style}>
                     <ReactBootstrapSlider value={this.state.currentSlice} change={this.onSliceChange.bind(this)} min={0} max={31} orientation="vertical" />
                 </div>
@@ -125,18 +128,21 @@ export default class CTItemPage extends Component {
                 }
             </Col>
             { item.nodules ?
-                <Col xs={12} sm={4}>
+                <Col xs={12} sm={4} className="nodules">
+                    <h3>Confirmed nodules</h3>
                     { this.renderNodulesList(item) }
                 </Col>
               : null
             }
-            <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.mask}>
-                { item.waitingInference ?
-                    <Icon name="spinner" spin />
-                  :
-                    <span><Icon name="check-circle-o" /><span>Click to predict</span></span>
-                }
-            </Button>
+            { item.mask ? null :
+                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.mask}>
+                    { item.waitingInference ?
+                        <Icon name="spinner" spin />
+                      :
+                        <span><Icon name="check-circle-o" /><span>Click to predict</span></span>
+                    }
+                </Button>
+            }
             </Row>
         )
     }

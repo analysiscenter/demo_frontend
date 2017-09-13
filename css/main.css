@@ -108,6 +108,7 @@ body {
 
 .page.item .image-viewer {
 	text-align: center;
+	display: flex;
 }
 
 .page.item .image-viewer .btn.toggle {
@@ -122,8 +123,14 @@ body {
 	text-decoration: line-through;
 }
 
+.page.item .image-viewer .image-viewer-with-slider {
+	display: flex;
+}
+
 .page.item .image-viewer .slider {
 	height: 100%;
+	margin-left: 0.2rem;
+	margin-top: 1.5rem;
 }
 
 .page.item button.get-inference {
@@ -148,18 +155,22 @@ body {
 	font-size: 3rem;
 }
 
-.page.ct.item .list-group {
-	margin-top: 1.5rem;
+.page.ct.item .nodules h3 {
+	margin-top: 0.2rem;
+}
+
+.page.ct.item .nodules .list-group {
+	margin-top: 0.2rem;
 	font-size: 0.5rem;
 	cursor: pointer;
 	user-select: none;
 }
 
-.page.ct.item .list-group-item {
+.page.ct.item .nodules .list-group-item {
 	outline: none;
 }
 
-.page.ct.item .list-group-item:hover {
+.page.ct.item .nodules .list-group-item:hover {
 	background: #eeeeee;
 }
 
