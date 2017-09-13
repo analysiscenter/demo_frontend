@@ -133,6 +133,16 @@ body {
 	margin-top: 1.5rem;
 }
 
+.page.item .image-viewer .slider .slider-track {
+	width: 0.5rem;
+}
+
+.page.item .image-viewer .slider .slider-handle {
+	width: 0.8rem;
+	height: 0.8rem;
+	margin-left: 0.04rem;
+}
+
 .page.item button.get-inference {
 	position: absolute;
 	top: 0;
