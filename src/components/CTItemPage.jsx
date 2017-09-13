@@ -5,7 +5,7 @@ import { ReactBootstrapSlider } from 'react-bootstrap-slider'
 import Toggle from 'react-bootstrap-toggle'
 import { Icon } from 'react-fa'
 import { inject, observer } from 'mobx-react'
-import { Layer, Stage, Image, Circle } from 'react-konva'
+import { Layer, Stage, Image, Ellipse } from 'react-konva'
 
 
 @inject("ct_store")
@@ -61,18 +61,18 @@ export default class CTItemPage extends Component {
             mask_image = this.drawImage(maskData, resizeFactor)
         }
 
-        const viewer_style = { width: "90%" }
         const slider_style = { height: scan_image.height }
-
 
         let nodules
         if (item.nodules){
             nodules = item.nodules.map(function(nodule, ix){
                 if ((self.state.currentSlice > nodule[0] - nodule[3] / 2) & (self.state.currentSlice < nodule[0] + nodule[3] / 2)) {
-                    const radius = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[3]/2)) * nodule [3]
-                    return <Circle key={ix} x={nodule[1]*resizeFactor}
-                                            y={nodule[2]*resizeFactor}
-                                            radius={radius*resizeFactor} fill='green' opacity={0.5} />
+                    const radius_y = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[4]/2)) * nodule [4]
+                    const radius_x = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[5]/2)) * nodule [5]
+                    return <Ellipse key={ix} x={nodule[1] * resizeFactor}
+                                             y={nodule[2] * resizeFactor}
+                                             radius={{x: radius_x * resizeFactor, y: radius_y * resizeFactor}}
+                                             fill='green' opacity={0.5} />
                 } else
                     return null
             })
