@@ -21,21 +21,23 @@ export default class CTItemPage extends Component {
     }
 
     renderPage(item) {
+        const annotation = item.inference? [item.inference.qrs_segments, item.inference.p_segments, item.inference.t_segments] : null
+
         return (
         <Row>
             { item.signal ?
-                <EcgSignalPlot signal={item.signal} fs={item.frequency} annotation={item.annotation} />
+                <EcgSignalPlot signal={item.signal} fs={item.frequency} annotation={annotation} />
               :
               null
             }
-            { item.af_prob ?
+            { item.inference ?
                 <Row>
                     <EcgItemResults pid={item.id}/>
                 </Row>
             : null
             }
 
-            { item.af_prob ? null :
+            { item.inference ? null :
                 <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.annotation}>
                     { item.waitingInference ?
                         <Icon name="spinner" spin />
@@ -60,7 +62,7 @@ export default class CTItemPage extends Component {
             <Grid fluid>
             <Row>
                 <Col xs={12}>
-                    <h2>Patient {this.props.match.params.id}</h2>
+                    <h2>Patient {item.name ? item.name : null}</h2>
                 </Col>
             </Row>
             {(item === undefined) ?

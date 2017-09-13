@@ -12,7 +12,6 @@ const item_template = {
    date: null,
    units: null,
    lead: null,
-   af_prob: null,
    inference: null,
    waitingData: false,
    waitingInference: false

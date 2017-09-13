@@ -22,13 +22,13 @@ export default class EcgItemResults extends Component {
                     <h3>Heart beat rate</h3>
                     <div className="heart-rate">
                         <Icon name='heartbeat' />
-                        <span>{ Math.round(item.heart_rate) + ' bpm' }</span>
+                        <span>{ Math.round(item.inference.heart_rate) + ' bpm' }</span>
                     </div>
                 </Col>
                 <Col xs={6} sm={3}>
                     <h3>AF probability</h3>
                     <Col xs={8} xsOffset={2}>
-                        <CircularProgressbar percentage={Math.round(item.af_prob * 100)} initialAnimation />
+                        <CircularProgressbar percentage={Math.round(item.inference.af_prob * 100)} initialAnimation />
                     </Col>
                 </Col>
                 <Col sm={6}>

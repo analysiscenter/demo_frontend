@@ -48,7 +48,7 @@ const options = {
             this.data.datasets.forEach(function (dataset, i) {
                 var meta = chartInstance.controller.getDatasetMeta(i);
                 meta.data.forEach(function (bar, index) {
-                    var data = dataset.data[index];
+                    var data = Math.round(dataset.data[index] * 100) / 100;
                     ctx.fillText(data, bar._model.x, bar._model.y - 5);
                 });
             });
@@ -67,7 +67,7 @@ export default class EcgSegmentsBarChart extends Component {
             labels: ['QRS', 'QT', 'PQ'],
             datasets: [
                 {
-                    data: [item.qrs_t, item.t_wave, item.p_wave],
+                    data: [item.inference.qrs_interval, item.inference.qt_interval, item.inference.pq_interval],
                     backgroundColor: ['rgba(255,19,12,0.2)', 'rgba(255,19,132,0.2)', 'rgba(55,99,192,0.2)']
                 }
             ],
