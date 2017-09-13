@@ -67,8 +67,8 @@ export default class CTItemPage extends Component {
         if (item.nodules){
             nodules = item.nodules.map(function(nodule, ix){
                 if ((self.state.currentSlice > nodule[0] - nodule[3] / 2) & (self.state.currentSlice < nodule[0] + nodule[3] / 2)) {
-                    const radius_y = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[4]/2)) * nodule [4]
-                    const radius_x = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[5]/2)) * nodule [5]
+                    const radius_y = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[3]/2)) * nodule[4]
+                    const radius_x = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[3]/2)) * nodule[5]
                     return <Ellipse key={ix} x={nodule[1] * resizeFactor}
                                              y={nodule[2] * resizeFactor}
                                              radius={{x: radius_x * resizeFactor, y: radius_y * resizeFactor}}
