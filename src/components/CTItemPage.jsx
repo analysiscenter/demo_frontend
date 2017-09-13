@@ -159,7 +159,7 @@ export default class CTItemPage extends Component {
 
     render() {
         const self = this
-        const item = this.props.ct_store.items.get(this.props.match.params.id)
+        const item = this.props.ct_store.get(this.props.match.params.id)
 
         return (
         <div className="page ct item">

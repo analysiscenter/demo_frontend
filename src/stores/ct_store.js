@@ -46,10 +46,12 @@ export default class CT_Store {
     }
 
     getItemData(id) {
-        if (!this.items.get(id).waitingData){
-            this.items.get(id).waitingData = true
-            this.server.send(API_Events.CT_GET_ITEM_DATA, {id: id})
-        }
+        const item = this.items.get(id)
+        if (item != undefined)
+            if (!item.waitingData){
+                item.waitingData = true
+                this.server.send(API_Events.CT_GET_ITEM_DATA, {id: id})
+            }
     }
 
     @action
@@ -62,8 +64,9 @@ export default class CT_Store {
 
     get(id) {
         const item = this.items.get(id)
-        if (item.image == null)
-            this.getItemData(id)
+        if (item != undefined)
+            if (item.image == null)
+                this.getItemData(id)
         return item
     }
 

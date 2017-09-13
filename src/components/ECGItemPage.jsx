@@ -62,7 +62,7 @@ export default class CTItemPage extends Component {
             <Grid fluid>
             <Row>
                 <Col xs={12}>
-                    <h2>Patient {item.name ? item.name : null}</h2>
+                    <h2>Patient {(item != undefined) ? item.name : null}</h2>
                 </Col>
             </Row>
             {(item === undefined) ?

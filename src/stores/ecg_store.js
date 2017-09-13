@@ -56,10 +56,12 @@ export default class ECG_Store {
     }
 
     getItemData(id) {
-        if (!this.items.get(id).waitingData){
-            this.items.get(id).waitingData = true
-            this.server.send(API_Events.ECG_GET_ITEM_DATA, {id: id})
-        }
+        const item = this.items.get(id)
+        if (item != undefined)
+            if (!item.waitingData){
+                item.waitingData = true
+                this.server.send(API_Events.ECG_GET_ITEM_DATA, {id: id})
+            }
     }
 
     getInference(id) {
@@ -71,8 +73,9 @@ export default class ECG_Store {
 
     get(id) {
         const item = this.items.get(id)
-        if (item.signal == null)
-            this.getItemData(id)
+        if (item != undefined)
+            if (item.signal == null)
+                this.getItemData(id)
         return item
     }
 }
