@@ -135,7 +135,7 @@ export default class CTItemPage extends Component {
               : null
             }
             { item.mask ? null :
-                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.mask}>
+                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)}>
                     { item.waitingInference ?
                         <Icon name="spinner" spin />
                       :

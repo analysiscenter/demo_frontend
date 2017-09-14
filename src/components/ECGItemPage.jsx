@@ -38,7 +38,7 @@ export default class CTItemPage extends Component {
             }
 
             { item.inference ? null :
-                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)} disabled={!!item.annotation}>
+                <Button bsStyle="success" className="get-inference" onClick={this.handleInference.bind(this)}>
                     { item.waitingInference ?
                         <Icon name="spinner" spin />
                       :
