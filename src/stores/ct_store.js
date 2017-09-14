@@ -105,7 +105,7 @@ export default class CT_Store {
 
     getMaskSlice(id, slice_no) {
         const image = this.items.get(id).mask[slice_no]
-        return this.makeImage(image, 'red', 0.5)
+        return this.makeImage(image, 'red', 0.8)
     }
 
 }

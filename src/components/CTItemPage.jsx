@@ -13,7 +13,6 @@ import { Layer, Stage, Image, Ellipse } from 'react-konva'
 export default class CTItemPage extends Component {
     constructor(props) {
         super(props)
-        props.ct_store.getItemData(props.match.params.id)
         this.state = {currentSlice: 0, maskOn: true, nodulesOn: true}
     }
 
@@ -69,8 +68,8 @@ export default class CTItemPage extends Component {
                 if ((self.state.currentSlice > nodule[0] - nodule[3] / 2) & (self.state.currentSlice < nodule[0] + nodule[3] / 2)) {
                     const radius_y = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[3]/2)) * nodule[4]
                     const radius_x = (1 - Math.abs(nodule[0] - self.state.currentSlice) / (nodule[3]/2)) * nodule[5]
-                    return <Ellipse key={ix} x={nodule[1] * resizeFactor}
-                                             y={nodule[2] * resizeFactor}
+                    return <Ellipse key={ix} x={nodule[2] * resizeFactor}
+                                             y={nodule[1] * resizeFactor}
                                              radius={{x: radius_x * resizeFactor, y: radius_y * resizeFactor}}
                                              fill='green' opacity={0.5} />
                 } else
@@ -158,7 +157,6 @@ export default class CTItemPage extends Component {
     }
 
     render() {
-        const self = this
         const item = this.props.ct_store.get(this.props.match.params.id)
 
         return (
