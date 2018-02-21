@@ -10,11 +10,14 @@ export default class MainPage extends Component {
     <div className="page main">
         <Grid fluid>
         <Row>
-            <Col xs={6}>
+            <Col xs={12} sm={6} md={6} lg={4}>
                 <Link to="/ecg"><Icon name='heartbeat' className='big' /></Link>
             </Col>
-            <Col xs={6}>
+            <Col xs={12} sm={6} md={6} lg={4}>
                 <Link to="/ct"><Icon name='universal-access' className='big' /></Link>
+            </Col>
+            <Col xs={12} sm={6} md={6} lg={4}>
+                <Link to="/mt"><Icon name='cog' className='big' /></Link>
             </Col>
         </Row>
         </Grid>
