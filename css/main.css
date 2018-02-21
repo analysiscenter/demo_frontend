@@ -79,9 +79,13 @@ body {
 }
 
 .page .item div {
-	padding: 0.3rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-flow: column wrap;
+	align-content: space-between;
+	padding-top: 0.2rem;
 	padding-bottom: 0rem;
-	padding-right: 2.6rem;
 }
 
 .page .item a {
