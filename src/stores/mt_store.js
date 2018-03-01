@@ -41,6 +41,7 @@ export default class MT_Store {
 
     @action
     onGotItemData(data, meta){
+        console.log('got item', data.id)
         extendObservable(this.items.get(data.id), data)
         this.items.get(data.id).waitingData = false
     }
@@ -68,6 +69,7 @@ export default class MT_Store {
     }
     
     makeImage(sourceData, height, width){
+	return sourceData
         const bitmapImage = new Uint8ClampedArray(sourceData.length * 4 / 3)
          for(let i=0; i< bitmapImage.length / 4; i++){
                 bitmapImage[4 * i + 0] = sourceData[3 * i + 0]

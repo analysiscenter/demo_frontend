@@ -6,7 +6,7 @@
   "author": "Roman Kh <rhudor@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --port 5000 --host 0.0.0.0 --disable-host-check"
   },
   "dependencies": {
     "chart.js": "^2.7.0",
