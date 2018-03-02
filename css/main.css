@@ -1,6 +1,7 @@
 html {
     font-size: 4vmin;
 }
+
 body {
     line-height: 1;
     font-family: 'Roboto', sans-serif;
@@ -9,17 +10,16 @@ body {
 
 .main-menu {
 	margin: 0;
-	padding-top: 0;
+	padding: 0;
 	background: #337ab7;
 	font-size: 0.75rem;
 	border: 0;
 	min-height: 2rem;
-	padding-left: 0.3rem;
 	border-radius: 0;
 
 }
 .main-menu .container {
-	margin-left: 0;
+	margin: 0;
 	padding: 0;
 }
 
@@ -33,6 +33,7 @@ body {
 	text-decoration: none;
 	font-family: 'Roboto Condensed', sans-serif;
 	font-weight: 100;
+	text-align: center;
 }
 
 .main-menu a:hover {
@@ -50,8 +51,12 @@ body {
 	font-weight: 700;
 }
 
+.main-menu .menu-item {
+	padding: 0;
+}
+
 .page {
-	padding-top: 0.5rem;
+	padding: 0 0 1rem 0;
 }
 
 .page.main {
@@ -256,7 +261,7 @@ body {
 }
 
 .CircularProgressbar {
-  
+
  /*  * This fixes an issue where the CircularProgressbar svg has
    * 0 width inside a "display: flex" container, and thus not visible.
    *

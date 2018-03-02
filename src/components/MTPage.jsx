@@ -11,45 +11,43 @@ import Toggle from 'react-bootstrap-toggle'
 @inject("mt_store")
 @observer
 export class MtItem extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     handleInference(id) {
         this.props.mt_store.getInference(id)
     }
 
-    drawImage(item, image) {
+    drawImage(item, image, resizeFactor) {
         const canvas = document.createElement('canvas')
-        canvas.width = item.width
-        canvas.height = item.height
+        canvas.width = image.width
+        canvas.height = image.height
         const ctx = canvas.getContext('2d')
+        ctx.putImageData(image, 0, 0)
 
-        let img = new Image(item.width, item.height)
-        img.onload = function(){
-            console.log('onload', item.id)
-            ctx.drawImage(img, 0, 0)
-        }
-        img.src = image
-        console.log('draw', item.id)
-        return canvas
+        const canvas2 = document.createElement('canvas')
+        canvas2.width = canvas.width / resizeFactor
+        canvas2.height = canvas.height / resizeFactor
+        const ctx2 = canvas2.getContext('2d')
+        ctx2.drawImage(canvas, 0, 0, image.width / resizeFactor, image.height / resizeFactor)
+        return canvas2
     }
 
     renderImageViewer(item) {
         const self = this
 
         const imageData = this.props.mt_store.getImage(item.id)
-        const drawn_image = this.drawImage(item, imageData)
+
+        const resizeFactor = Math.max(imageData.width, imageData.height) / 300
+
+        const image = this.drawImage(item, imageData, resizeFactor)
 
         let box = null
         if (item.inference != null)
-            box = item.inference.bbox
+            box = item.inference.bbox.map(x => x / resizeFactor)
 
         return (
             <div className="image-viewer">
                 <div className="image-viewer-with-toggles">
-                    <Stage width={item.width} height={item.height}>
-                        <Layer><KImage image={drawn_image} /></Layer>
+                    <Stage width={image.width} height={image.height}>
+                        <Layer><KImage image={image} /></Layer>
                         { (item.inference != null) ? <Layer><Rect x={box[0]} y={box[1]} width={box[2]} height={box[3]} stroke='green' strokeWidth={7} /></Layer> : null}
                     </Stage>
                 </div>
@@ -65,13 +63,14 @@ export class MtItem extends Component {
     }
 
    render() {
-       const item = this.props.mt_store.items.get(this.props.id)
+        const item = this.props.mt_store.items.get(this.props.id)
+
         return (
         <Col xs={12} sm={6} md={6} lg={4} key={item.id}>
-            <div className="item">
+            <div className="item" id={item.id}>
                 <div>
                     <div>
-                    { item.img == null ?
+                    { item.image == null ?
                         this.renderImageLoading(item)
                         :
                         this.renderImageViewer(item)
@@ -109,8 +108,3 @@ export default class MTPage extends Component {
         )
     }
 }
-    // { item.inference == null ?
-    //                         <span></span>
-    //                         :
-    //                         <span>{item.inference.value}</span>
-    //                     }
