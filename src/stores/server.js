@@ -1,6 +1,6 @@
 import socket from 'socket.io-client'
 import { observable } from 'mobx'
-import EventEmitter from 'EventEmitter3'
+import EventEmitter from 'eventemitter3'
 
 import { API_Responses, SocketIOEvents } from './const'
 
@@ -59,6 +59,7 @@ export default class Server extends EventEmitter {
 
     disconnect() {
         this.ready = false
+        console.log("... disconnected ...")
     }
 
     reconnecting() {
