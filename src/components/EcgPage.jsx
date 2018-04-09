@@ -1,20 +1,14 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Component } from 'react'
-// import $ from 'jquery';
-import { Grid, Row, Col, Button, FormGroup, Checkbox, Radio, FormControl, ControlLabel } from 'react-bootstrap'
+import { Grid, Row, Col, Button, FormGroup, Checkbox, FormControl } from 'react-bootstrap'
 import { Icon } from 'react-fa'
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 
-import { DatePicker, Menu, SubMenu } from 'antd'
-import CircularProgressbar from 'react-circular-progressbar'
-
-
 import LoadingSpinner from './LoadingSpinner.jsx'
 import EcgSignalPlot from './EcgSignalPlot.jsx';
 
-const plot_layouts = ["6x2", "nx1"];
+// https://blog.arkency.com/2014/10/react-dot-js-and-dynamic-children-why-the-keys-are-important/
 
 @inject("ecg_store")
 @observer
@@ -24,13 +18,10 @@ export default class EcgPage extends Component {
         
         this.state = {
             all_channels: true,
-            selected_channels: [],
             selected_channel: 0,
-            layout: plot_layouts[0],
             view_all_channels: true,
             channel: [],
             pid: null,
-            enlarge: -1,
             annotation: [],
             descent_sort: false,
             signame: null,
@@ -39,31 +30,27 @@ export default class EcgPage extends Component {
             search_string: '',
             collapse_groups: true,
             show_common: true,
-            width: 0,
-            height: 0
-        };
+            browser_width: 0,
+            browser_height: 0,
+            current_ecg_list_key: 0
+        };  
            
         this.handleAllChannels = this.handleAllChannels.bind(this);
         this.handleHideAnnotated = this.handleHideAnnotated.bind(this);
         this.handleShowGroups = this.handleShowGroups.bind(this);      
         this.handleSelectChannel = this.handleSelectChannel.bind(this);
         this.handleCheckAnnotation = this.handleCheckAnnotation.bind(this);
-        this.handleEnlarge = this.handleEnlarge.bind(this);
         this.handleLayoutChange = this.handleLayoutChange.bind(this);
         this.handleEcgSelect = this.handleEcgSelect.bind(this);
         this.handleAnnSelect = this.handleAnnSelect.bind(this);
         this.handleSort = this.handleSort.bind(this);
-        this.sortedList = this.sortedList.bind(this);
-        this.renderGridPlot = this.renderGridPlot.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCollapseGroups = this.handleCollapseGroups.bind(this);
-        this.handleCollapseCommon = this.handleCollapseCommon.bind(this);
-        
-        this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.handleCollapseCommon = this.handleCollapseCommon.bind(this);       
+        // this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
     
     handleShowGroups(value) {
-        console.log(value);
         if (this.state.show_groups.includes(value)) {
             var filtered = this.state.show_groups.filter(t => t !== value)
             this.setState({show_groups: filtered});
@@ -119,11 +106,6 @@ export default class EcgPage extends Component {
         this.setState({view_all_channels: !this.state.view_all_channels});
     }
     
-    handleEnlarge(e) {
-        console.log("ENLARGE", e);
-        this.setState({enlarge: parseInt(e.target.value)});
-    }
-    
     handleSubmit(e) {
         let pid = this.state.pid;
         var item = this.props.ecg_store.items.get(pid);
@@ -143,32 +125,7 @@ export default class EcgPage extends Component {
     }
     
     handleEcgSelect(e) {
-        console.log("handleEcgSelect", e.target.value);
-        console.log(this.refs);
-        
-        // let queryInput = ReactDOM.findDOMNode(document.querySelector('formControlsSelectMultiple'));
-        // queryInput.focus();
-        // console.log("handleEcgSelect", $("#formControlsSelectMultiple").val());
-        
-        console.log($('#formControlsSelectMultiple'))
-
-        // // Extract the value of the first option.
-        // var sVal = $('select[name=handleEcgSelect] option:first').val();
-
-        // // Set the "selected" value of the <select>.
-        // $('select[name=handleEcgSelect]').val(sVal);
-
-        // // Force a refresh.
-        // $('select[name=handleEcgSelect]').selectpicker('refresh');
-
         this.setState({pid: e.target.value});
-    }
-    
-    parseEcgDate(str) {
-        return new Date(str.slice(6, 10) + '-' + 
-                        str.slice(3, 5) + '-' +
-                        str.slice(0, 2) + 'T' +
-                        str.slice(11, 19));
     }
     
     showEcgName(item) {
@@ -214,46 +171,15 @@ export default class EcgPage extends Component {
     renderEcgList() {
         return (
         <Row>
-            <FormGroup controlId="formControlsSelectMultiple">
+            <FormGroup controlId="formControlsSelectMultiple" key={this.state.current_ecg_list_key}>
                 <FormControl componentClass="select"
-                             className="list" multiple
-                             onChange={this.handleEcgSelect}
-                             onBlur={console.log("OnBlur")}
-                             onFocus={console.log("onFocus")}
-                             ref="input-ecg">
+                             className="list"
+                             multiple
+                             value={this.state.pid !== null ? [this.state.pid] : ['']}
+                             onChange={this.handleEcgSelect}>
                     { this.sortedList() }
                 </FormControl>
             </FormGroup>
-        </Row>
-        )
-    }
- 
-    renderDiagnoseGroup_(group_name, diagnoses) {
-        if (this.state.search_string === '') {
-            var mask_diagnoses = diagnoses;
-        }
-        else {
-            var mask_diagnoses = diagnoses.filter(x =>
-                x.toLowerCase().includes(this.state.search_string.toLowerCase()));
-        }
-      
-        return (
-        <Row>
-            <Row>
-                <Button onClick={this.handleShowGroups}
-                        value={group_name}
-                        type="submit"
-                        className="hide"
-                        bsStyle={this.state.show_groups.includes(group_name) ? "primary": "default"}>{group_name}</Button>
-            </Row>
-            <Row>
-                {this.state.show_groups.includes(group_name) ?
-                <FormGroup className="diagnoses">
-                    {mask_diagnoses.map( item => <Checkbox value={item}
-                                                      checked={this.state.annotation.includes(item)}
-                                                      onChange={this.handleCheckAnnotation}>{item}</Checkbox> )}  
-                </FormGroup> : null}
-            </Row>
         </Row>
         )
     }
@@ -346,8 +272,8 @@ export default class EcgPage extends Component {
                            fs={item.frequency}
                            signame={item.signame}
                            layout_type="nx1"
-                           width={this.state.width}
-                           height={this.state.height}
+                           width={this.state.browser_width}
+                           height={this.state.browser_height}
                            div_id='subplots'/> 
         </Row>
         )
@@ -369,8 +295,8 @@ export default class EcgPage extends Component {
                                fs={item.frequency} 
                                signame={item.signame}
                                layout_type="6x2"
-                               width={this.state.width}
-                               height={this.state.height}
+                               width={this.state.browser_width}
+                               height={this.state.browser_height}
                                div_id='subplots'/>
             </Row>
             )
@@ -401,16 +327,16 @@ export default class EcgPage extends Component {
     }
     
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("componentDidUpdate",prevState.pid);
         var item = prevProps.ecg_store.items.get(prevState.pid);       
         if (item === undefined & prevState.pid !== null) {
-            this.setState({pid: null});
+            this.setState({pid: null,
+                           current_ecg_list_key: this.state.current_ecg_list_key + 1});
         }
     }
     
-    updateDimensions() {
-        console.log("Window size:", window.innerWidth, window.innerHeight)     
-        this.setState({ width: window.innerWidth, height: window.innerHeight });
+    updateDimensions() {    
+        this.setState({browser_width: window.innerWidth,
+                       browser_height: window.innerHeight});
     }
     
     componentDidMount() {
