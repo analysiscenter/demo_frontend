@@ -211,12 +211,12 @@ export default class EcgPage extends Component {
         }
         else {
             var mask_diagnoses = diagnoses.filter(x => x.toLowerCase().includes(this.state.search_string));
-            let collapsed = !this.state.show_groups.includes(group_name)
+            let collapsed = !(this.state.show_groups.includes(group_name) || (this.state.search_string.length > 0))
             return (
             <Row className={collapsed ? "collapsed_group" : "enrolled_group"}>
                 <span> 
                     <Icon value={group_name}
-                          name={this.state.show_groups.includes(group_name) ? "angle-down" : "angle-right"}
+                          name={!collapsed ? "angle-down" : "angle-right"}
                           onClick={this.handleShowGroups.bind(this, group_name)} />
                         <span className="group_name">{group_name}</span>
                 </span>
