@@ -18,42 +18,38 @@ body {
 	font-weight: 100;
 }
 
+.page .left_column {
+    padding-left: 0.2rem;
+    width: 5.5rem;
+    float: left;
+    display: block;
+}
+
+.page .middle_column {
+    flex-grow: 1;
+    max-width: calc(100% - 13.5rem);
+    display: block;
+    overflow: auto;
+}
+
+.page .right_column {
+    width: 8rem;
+    flex: right;
+    display: block;
+    padding-left: 0.5rem;
+}
+
 .loading {
     height: 100vh;
 	margin-top: 20%;
     margin-left: 50%;
 }
 
-.page .svg-container{
-	/* width: 70vw; */
-    /* position: fixed; */
-    /* width: 50%; */
-    /* height: 70vh; */
-    
-    /* margin-left: -50rem; */
-    /* padding-left: -20rem; */
-    
-    /* viewBox: "0 0 200 10"; */
-    
-    /* display: inline-block; */
-    /* position: relative; */
-    /* width: 100%; */
-    /* height: 100% */
-    /* padding-bottom: 100%; aspect ratio */
-    /* vertical-align: top; */
-    /* overflow: hidden; */
+.page .js-plotly-plot{
 }
-
-/* .page .svg-content-responsive { */
-    /* display: inline-block; */
-    /* position: absolute; */
-    /* top: 10px; */
-    /* left: 0; */
-/* } */
 
 .page .row {
     padding: 0;
-    /* text-align: center; */
     font-size: 0.6rem;
     margin-right: 0.rem;
     margin-left: 0.rem;
@@ -62,7 +58,7 @@ body {
 .page .row .overflow_small{
     margin-top: 0.5rem;
     overflow-y: auto;
-    max-height: 38vh;
+    max-height: 38vh; 
     padding: 0;
     display: inline-block;
 }
@@ -108,9 +104,7 @@ body {
 
 .page .search_line {
     margin-top: 0.5rem;
-    /* margin-bottom: 0.5rem; */
     height: 1.2rem;
-    /* width: 5rem; */
     padding-left: 0.2rem;
     overflow-y: scroll;
     font-size: 0.6rem;
@@ -141,10 +135,8 @@ body {
 }
 
 .page .ecg_list_header {
-    /* overflow: show;  */
     margin-top: 0.25rem;
     margin-bottom: 0.5rem;
-    /* white-space: nowrap; */
     font-size: 0.8rem;
 	font-family: "Roboto Condensed", sans-serif;
 	font-weight: 400;
@@ -154,7 +146,7 @@ body {
     margin-left: 0.5rem;
 }
 
-.page a.onleft{
+.page a.onleft {
     margin-top: 0.2rem;
     margin-left: 0rem;
 }
@@ -167,42 +159,8 @@ body {
 
 .page .list_header.subheader2 {
     font-size: 0.6rem;
-    /* margin-top: 0.3rem; */
     padding-top: 0.5rem;
-    /* margin-bottom: 0.5rem; */
 }
-
-.page .left_column {
-    /* margin-left: -3rem; */
-    /* margin-right: -3rem; */
-    /* max-width: 11%; */
-    /* flex: 0 0 11%; */
-    /* overflow-x: hide; */
-    /* padding-left: 3rem; */
-    /* padding-right: 3rem; */
-}
-
-.page .middle_column {
-    /* margin-left: -3rem; */
-    /* margin-right: 3rem; */
-    
-    margin-left: -5vw;
-    margin-right: 5vw;
-    /* flex: 0 0 72%; */
-}
-
-.page .right_column {
-    /* margin-left: 3rem; */
-    /* margin-right: -30rem; */
-    /* padding-left: 0.5rem; */
-    /* margin-right: 3rem; */
-    /* position: fixed; */
-    /* top: 0; */
-    /* right: 0; */
-    /* float: right; */
-    /* flex: 0 0 20%; */
-}
-
 
 .page .font100 {
     margin-left: 0.1rem;
@@ -244,20 +202,8 @@ body {
     text-align: center;
 }
 
-.page button.zoom {
-	padding: 0;
-	margin-top: -0.3rem;
-	width: 1.5rem;
-	height: 1.2rem;
-	font-size: 0.6rem;
-	font-family: "Roboto Condensed", sans-serif;
-	font-weight: 100;
-    text-align: center;
-}
-
 .page .button-group {
 	padding: 0;
-	/* margin-left: 1rem; */
     margin-bottom: 0.2rem;
 }
 
@@ -265,17 +211,11 @@ body {
     margin-top: 0.5rem;
 }
 
-.page button.set_channel.all {
-	width: 2.5rem;
-}
-
 .page span {
-	/* text-align: center; */
     font-size: 0.6rem;
 }
 
 .page .diagnose_group {
-	/* text-align: center; */
     height: 1.2rem;
 }
 
@@ -320,18 +260,6 @@ body {
     padding: 0;
 }
 
-.page button.set_layout {
-	padding: 0;
-	margin-top: 0.4rem;
-    margin-left: 0rem;
-	width: 2rem;
-	height: 1.2rem;
-	font-size: 0.6rem;
-	font-family: "Roboto Condensed", sans-serif;
-	font-weight: 100;
-    text-align: center;
-}
-
 .page .row .bottom {
     position: fixed;
     bottom: 3vh;
@@ -339,7 +267,6 @@ body {
 
 .page button.submit {
 	padding: 0;
-    /* bottom: 0px; */
 	margin-top: 0.5rem;
 	width: 7.2rem;
 	height: 1.3rem;
@@ -349,62 +276,9 @@ body {
     text-align: center;
 }
 
-.page button.hide {
-	padding: 0;
-	margin-top: 0rem;
-	width: 5rem;
-	height: 1.2rem;
-	font-size: 0.4rem;
-	font-family: "Roboto Condensed", sans-serif;
-	font-weight: 100;
-    text-align: center;
-}
-
-.page button.sort_order {
-	padding: 0;
-	margin-top: -0.6rem;
-    margin-left: 0rem;
-	width: 1rem;
-	height: 1.rem;
-    text-align: center;
-}
-
-.page button.sort_order .fa {
-}
-
 .page .empty {
     font-size: 1.2rem;
     text-align: center;
     padding-top: 5rem;
-    padding-left: 12rem;
-}
-
-.CircularProgressbar {
- /*  * This fixes an issue where the CircularProgressbar svg has
-   * 0 width inside a "display: flex" container, and thus not visible.
-   *
-   * If you're not using "display: flex", you can remove this style.
-   */
-  width: 75%;
-  margin-top: -0.5rem;
-  margin-left: 0.5rem;
-}
-
-.CircularProgressbar .CircularProgressbar-path {
-  /* stroke: #3e98c7; */
-  stroke: green;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.5s ease 0s;
-}
-
-.CircularProgressbar .CircularProgressbar-trail {
-  stroke: #d6d6d6;
-}
-
-.CircularProgressbar .CircularProgressbar-text {
-  /* fill: #3e98c7; */
-  fill: green;
-  font-size: 0.9rem;
-  dominant-baseline: middle;
-  text-anchor: middle;
+    flex-grow: 100;
 }
