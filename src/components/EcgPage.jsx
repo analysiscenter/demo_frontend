@@ -15,10 +15,8 @@ export default class EcgPage extends Component {
         super(props);
         
         this.state = {
-            all_channels: true,
             selected_channel: 0,
             view_all_channels: true,
-            channel: [],
             pid: null,
             annotation: [],
             descent_sort: false,
@@ -125,15 +123,15 @@ export default class EcgPage extends Component {
         this.setState({pid: e.target.value});
     }
     
-    showEcgName(item, key) {
-        if (this.state.hide_annotated && item.is_annotated)
+    showEcgName(item, index) {
+        if (this.state.hide_annotated & item.is_annotated)
         {
             return null
         }
         else {
             return (
                 <option value={item.id}
-                        key={key}
+                        key={index}
                         style={{color: item.is_annotated ? '#28a745' : "black"}}
                         className="font100">
                     {item.timestamp.slice(0, 5) + item.timestamp.slice(10, 16)}
@@ -156,12 +154,12 @@ export default class EcgPage extends Component {
         
         if (this.state.descent_sort) {
             return (
-                sorted.map( (item, key) => this.showEcgName(item, key) )                            
+                sorted.map( (item, index) => this.showEcgName(item, index) )                            
             )
         }
         else {
             return (
-                sorted.slice(0).reverse().map( (item, key) => this.showEcgName(item, key) )                             
+                sorted.slice(0).reverse().map( (item, index) => this.showEcgName(item, index) )                             
             )
         }
     }
@@ -173,8 +171,8 @@ export default class EcgPage extends Component {
                 <FormControl componentClass="select"
                              className="list"
                              multiple
-                             value={this.state.pid !== null ? [this.state.pid] : ['']}
-                             onChange={this.handleEcgSelect}>
+                             value={ this.state.pid !== null ? [this.state.pid] : [''] }
+                             onChange={ this.handleEcgSelect }>
                     { this.sortedList() }
                 </FormControl>
             </FormGroup>
@@ -182,13 +180,14 @@ export default class EcgPage extends Component {
         )
     }
     
-    renderCommonDiagnose(diagnose) {
+    renderCommonDiagnose(diagnose, index) {
         return (
         <Row>
             <Checkbox value={diagnose}
+                      key={index}
                       checked={this.state.annotation.includes(diagnose)}
                       onChange={this.handleCheckAnnotation}>               
-                      {diagnose.split('/').slice(-1)[0]}
+                { diagnose.split('/').slice(-1)[0] }
             </Checkbox> 
         </Row>
         )
@@ -203,34 +202,31 @@ export default class EcgPage extends Component {
                               onChange={this.handleCheckAnnotation}>{group_name}</Checkbox>
                 )
             }
-            else {
-                return null
-            }
+            else { return null }
         }
         else {
             var mask_diagnoses = diagnoses.filter(x => x.toLowerCase().includes(this.state.search_string));
-            let collapsed = !(this.state.show_groups.includes(group_name) || (this.state.search_string.length > 0))
+            let is_collapsed = !(this.state.show_groups.includes(group_name) || (this.state.search_string.length > 0))
             return (
-            <Row className={collapsed ? "collapsed_group" : "enrolled_group"}>
-                <span> 
-                    <Icon value={group_name}
-                          name={!collapsed ? "angle-down" : "angle-right"}
-                          onClick={this.handleShowGroups.bind(this, group_name)} />
+                <Row className={is_collapsed ? "collapsed_group" : "enrolled_group"}>
+                    <span value={group_name} onClick={this.handleShowGroups.bind(this, group_name)}> 
+                        <Icon name={!is_collapsed ? "angle-down" : "angle-right"} />
                         <span className="group_name">{group_name}</span>
-                </span>
+                    </span>
             
-                { !collapsed ?
-                    <Row className="group_annotations">
-                    {mask_diagnoses.map( (item, key) => 
-                        <Checkbox value={group_name + '/' + item}
-                                  key={key}  
-                                  checked={this.state.annotation.includes(group_name + '/' + item)}
-                                  onChange={this.handleCheckAnnotation}>{item}</Checkbox> )}
-                    </Row>
-                  :
-                  null
-                }
-            </Row>
+                    { !is_collapsed ?
+                        <Row className="group_annotations">
+                            {mask_diagnoses.map( (item, index) => 
+                                <Checkbox value={group_name + '/' + item}
+                                          key={index}  
+                                          checked={this.state.annotation.includes(group_name + '/' + item)}
+                                          onChange={this.handleCheckAnnotation}>{item}</Checkbox> )
+                            }
+                        </Row>
+                      :
+                      null
+                    }
+                </Row>
             )
         }
     }
@@ -326,7 +322,7 @@ export default class EcgPage extends Component {
         var item = prevProps.ecg_store.items.get(prevState.pid);       
         if (item === undefined & prevState.pid !== null) {
             this.setState({pid: null,
-                           current_ecg_list_key: this.state.current_ecg_list_key + 1});
+                           current_ecg_list_key: (this.state.current_ecg_list_key + 1) % 2});
         }
     }
     
@@ -371,7 +367,6 @@ export default class EcgPage extends Component {
                         </Row>
                         </div>
                     </Col>
-                    <Clearfix />
                     <Col className="middle_column" ref="bla">
                         <Row className='ecg_list_header'>
                             Результат расшифровки
@@ -382,7 +377,8 @@ export default class EcgPage extends Component {
                                     this.props.ecg_store.items.get(this.state.pid).annotation.map( x =>
                                         {return x.split('/').slice(-1)[0]}).join(', ')
                                     :
-                                    "Выберите значения из справочника и нажмите кнопку Сохранить")
+                                    "Выберите значения из справочника и нажмите кнопку Сохранить"
+                                )
                                 :
                                 null
                             }
@@ -392,12 +388,15 @@ export default class EcgPage extends Component {
                             {(this.props.ecg_store.items.get(this.state.pid) != undefined) ?
                                 " " + this.props.ecg_store.items.get(this.state.pid).timestamp
                                 :
-                                null}
+                                null
+                            }
                         </Row>
                         <Row className="show_leads">
-                            <span>Показать отведения <a href="#" className="onleft" onClick={this.handleLayoutChange}>
-                                {this.state.view_all_channels ? "по-одному" : "все"}
-                            </a>
+                            <span>
+                                Показать отведения
+                                <a href="#" className="onleft" onClick={this.handleLayoutChange}>
+                                    {this.state.view_all_channels ? " по-одному" : " все"}
+                                </a>
                             </span>
                         </Row>
                         
@@ -405,17 +404,12 @@ export default class EcgPage extends Component {
                             <Row><span className="empty">Список ЭКГ пуст</span></Row>
                             :
                             ((this.state.pid !== null) ?
-                        <Row>{this.renderGridPlot()}</Row>
+                                <Row>{this.renderGridPlot()}</Row>
                                 :
-                                <Row>
-                                    <span className="empty">Выберите ЭКГ из списка</span>
-                                </Row>
-                                
+                                <Row><span className="empty">Выберите ЭКГ из списка</span></Row>                               
                             )
-                        }
-                        
+                        }                       
                     </Col>
-                    <Clearfix />
                     <Col className='border_left right_column'>
                         <Row className='list_header'>
                             Расшифровка ЭКГ
@@ -429,8 +423,8 @@ export default class EcgPage extends Component {
                         </Row>
                         {this.state.show_common ?
                             <Row className='common_list'>
-                                {this.props.ecg_store.common_annotations.values().map( item => 
-                                    this.renderCommonDiagnose(item))}
+                                {this.props.ecg_store.common_annotations.values().map( (item, index) => 
+                                    this.renderCommonDiagnose(item, index))}
                             </Row> : null
                         }
                         <Row>
