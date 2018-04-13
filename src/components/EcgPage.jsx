@@ -182,12 +182,14 @@ export default class EcgPage extends Component {
     
     renderCommonDiagnose(diagnose, index) {
         return (
-            <Checkbox value={diagnose}
-                      key={index}
-                      checked={this.state.annotation.includes(diagnose)}
-                      onChange={this.handleCheckAnnotation}>               
-                { diagnose.split('/').slice(-1)[0] }
-            </Checkbox> 
+
+                <Checkbox value={diagnose}
+                          key={index}
+                          checked={this.state.annotation.includes(diagnose)}
+                          onChange={this.handleCheckAnnotation}>               
+                    { diagnose.split('/').slice(-1)[0] }
+                </Checkbox>
+
         )
     }
     
@@ -235,8 +237,10 @@ export default class EcgPage extends Component {
     renderDiagnose() {
         return (
         <Row>
-            {this.props.ecg_store.annotation_list.values().map( (item, index) => 
-                this.renderDiagnoseGroup(item.id, item.annotations, index))}
+            <FormGroup>
+                {this.props.ecg_store.annotation_list.values().map( (item, index) => 
+                    this.renderDiagnoseGroup(item.id, item.annotations, index))}
+            </FormGroup>
         </Row>
         )                       
     }
@@ -426,9 +430,13 @@ export default class EcgPage extends Component {
                         </Row>                        
                         {this.state.show_common ?
                             <Row className='common_list'>
-                                {this.props.ecg_store.common_annotations.values().map( (item, index) => 
-                                    this.renderCommonDiagnose(item, index))}
-                            </Row> : null
+                                <FormGroup>
+                                    {this.props.ecg_store.common_annotations.values().map( (item, index) => 
+                                        this.renderCommonDiagnose(item, index))}
+                                </FormGroup>
+                            </Row>
+                            :
+                            null
                         }                        
                         <Row>
                             <span className='list_header subheader2'>

@@ -42,7 +42,7 @@ body {
 .loading {
     height: 100vh;
 	margin-top: 20%;
-    margin-left: 50%;
+    text-align: center;
 }
 
 .page .js-plotly-plot{
@@ -84,7 +84,7 @@ body {
     border-left: 1px solid gray;
 }
 
-.page .row .common_list{
+.page .row.common_list{
     margin-top: 0.rem;
     overflow-y: auto;
     max-height: 24vh;
