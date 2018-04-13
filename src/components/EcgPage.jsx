@@ -182,24 +182,25 @@ export default class EcgPage extends Component {
     
     renderCommonDiagnose(diagnose, index) {
         return (
-        <Row>
             <Checkbox value={diagnose}
                       key={index}
                       checked={this.state.annotation.includes(diagnose)}
                       onChange={this.handleCheckAnnotation}>               
                 { diagnose.split('/').slice(-1)[0] }
             </Checkbox> 
-        </Row>
         )
     }
     
-    renderDiagnoseGroup(group_name, diagnoses) {
+    renderDiagnoseGroup(group_name, diagnoses, index) {
         if (diagnoses.length == 0) {
             if (group_name.toLowerCase().includes(this.state.search_string)) {
                 return (
                     <Checkbox value={group_name}
+                              key={index}
                               checked={this.state.annotation.includes(group_name)}
-                              onChange={this.handleCheckAnnotation}>{group_name}</Checkbox>
+                              onChange={this.handleCheckAnnotation}>
+                        {group_name}
+                    </Checkbox>
                 )
             }
             else { return null }
@@ -208,7 +209,7 @@ export default class EcgPage extends Component {
             var mask_diagnoses = diagnoses.filter(x => x.toLowerCase().includes(this.state.search_string));
             let is_collapsed = !(this.state.show_groups.includes(group_name) || (this.state.search_string.length > 0))
             return (
-                <Row className={is_collapsed ? "collapsed_group" : "enrolled_group"}>
+                <Row className={is_collapsed ? "collapsed_group" : "enrolled_group"} key={index}>
                     <span value={group_name} onClick={this.handleShowGroups.bind(this, group_name)}> 
                         <Icon name={!is_collapsed ? "angle-down" : "angle-right"} />
                         <span className="group_name">{group_name}</span>
@@ -234,8 +235,8 @@ export default class EcgPage extends Component {
     renderDiagnose() {
         return (
         <Row>
-            {this.props.ecg_store.annotation_list.values().map(item => 
-                this.renderDiagnoseGroup(item.id, item.annotations))}
+            {this.props.ecg_store.annotation_list.values().map( (item, index) => 
+                this.renderDiagnoseGroup(item.id, item.annotations, index))}
         </Row>
         )                       
     }
@@ -265,7 +266,8 @@ export default class EcgPage extends Component {
             <EcgSignalPlot signal={item.signal[x]}
                            id={item.id + x}
                            fs={item.frequency}
-                           signame={item.signame}
+                           signame={item.signame[x]}
+                           units={item.units[x]}
                            layout_type="1x1"
                            width={0.65 * this.state.browser_width}
                            height={0.7 * this.state.browser_height}
@@ -287,6 +289,7 @@ export default class EcgPage extends Component {
                                id={item.id}
                                fs={item.frequency} 
                                signame={item.signame}
+                               units={item.units}
                                layout_type="6x2"
                                width={0.65 * this.state.browser_width}
                                height={0.7 * this.state.browser_height}
@@ -339,7 +342,7 @@ export default class EcgPage extends Component {
     render() {        
         if (!this.props.ecg_store.ready_ecg_list | !this.props.ecg_store.ready_annotation_list) {
             return (
-                <LoadingSpinner />
+                <LoadingSpinner text="Ожидание соединения с сервером"/>
             )
         }
         else {
@@ -420,26 +423,28 @@ export default class EcgPage extends Component {
                                 {this.state.show_common ? "свернуть" : "развернуть"}
                             </a>
                             </span>
-                        </Row>
+                        </Row>                        
                         {this.state.show_common ?
                             <Row className='common_list'>
                                 {this.props.ecg_store.common_annotations.values().map( (item, index) => 
                                     this.renderCommonDiagnose(item, index))}
                             </Row> : null
-                        }
+                        }                        
                         <Row>
-                            <span className='list_header subheader2'><span>Справочник</span>
-                            <a href="#" onClick={this.handleCollapseGroups}>
+                            <span className='list_header subheader2'>
+                                <span>Справочник</span>
+                                <a href="#" onClick={this.handleCollapseGroups}>
                                 {this.state.collapse_groups ? "развернуть" : "свернуть"}
-                            </a></span>
-                        </Row>
+                                </a>
+                            </span>
+                        </Row>                        
                         <Row>
                             {this.renderSearch()}
-                        </Row>   
+                        </Row>                           
                         <Row className={this.state.show_common ? 'overflow_small' : 'overflow_large'}>
-                            {this.props.ecg_store.annotation_list.values().map(item => 
-                                this.renderDiagnoseGroup(item.id, item.annotations))}
-                        </Row>
+                            {this.props.ecg_store.annotation_list.values().map( (item, index) => 
+                                this.renderDiagnoseGroup(item.id, item.annotations, index))}
+                        </Row>                        
                         <Row className="bottom">
                             <Button type="submit" 
                                     bsStyle="success" 
@@ -455,3 +460,4 @@ export default class EcgPage extends Component {
         }
     }
 }
+

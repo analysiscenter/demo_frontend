@@ -23,6 +23,7 @@ export default class EcgSignalPlot extends Component {
             MakeSubplots(this.props.signal,
                          this.props.fs,
                          this.props.signame,
+                         this.props.units,
                          this.props.layout_type,
                          this.props.width,
                          this.props.height,
@@ -36,6 +37,7 @@ export default class EcgSignalPlot extends Component {
             MakeSubplots(nextProps.signal,
                          nextProps.fs,
                          nextProps.signame,
+                         nextProps.units,
                          nextProps.layout_type,
                          nextProps.width,
                          nextProps.height,
@@ -46,6 +48,7 @@ export default class EcgSignalPlot extends Component {
             MakeSubplots(nextProps.signal,
                          nextProps.fs,
                          nextProps.signame,
+                         nextProps.units,
                          nextProps.layout_type,
                          nextProps.width,
                          nextProps.height,
@@ -60,8 +63,7 @@ export default class EcgSignalPlot extends Component {
     }
 }
 
-function MakeSubplots(signal, fs, signame, layout_type, width, height, div_id) {
-    console.log("MAKE PLOT");
+function MakeSubplots(signal, fs, signame, units, layout_type, width, height, div_id) {
     switch(layout_type) {
         case "1x1":
             var traces = [{
@@ -71,7 +73,7 @@ function MakeSubplots(signal, fs, signame, layout_type, width, height, div_id) {
                 marker: {color: "blue"},
                 name: signame
             }];
-        
+            
             var layout = {
                 margin: {
                    t: 20,
@@ -84,7 +86,7 @@ function MakeSubplots(signal, fs, signame, layout_type, width, height, div_id) {
                     title: 'Время (сек)'
                 },
                 yaxis: {
-                    title: 'Амплитуда (мВ)'
+                    title: (units === 'mV') ? 'Амплитуда (мВ)' : 'Амплитуда (' + units + ')'
                 },
                 font: {
                    family: 'Roboto Condensed',
