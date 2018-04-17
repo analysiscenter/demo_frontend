@@ -1,471 +1,447 @@
 import React from 'react'
-import { Component } from 'react'
-import { Grid, Row, Col, Clearfix, Button, FormGroup, Checkbox, FormControl } from 'react-bootstrap'
+import { Grid, Row, Col, Button, FormGroup, Checkbox, FormControl } from 'react-bootstrap'
 import { Icon } from 'react-fa'
-import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 
 import LoadingSpinner from './LoadingSpinner.jsx'
-import EcgSignalPlot from './EcgSignalPlot.jsx';
+import EcgSignalPlot from './EcgSignalPlot.jsx'
 
-@inject("ecg_store")
+@inject("ecgStore")
 @observer
-export default class EcgPage extends Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            selected_channel: 0,
-            view_all_channels: true,
-            pid: null,
-            annotation: [],
-            descent_sort: false,
-            signame: null,
-            hide_annotated: false,
-            show_groups: [],
-            search_string: '',
-            collapse_groups: true,
-            show_common: true,
-            browser_width: 0,
-            browser_height: 0,
-            current_ecg_list_key: 0
-        };  
-           
-        this.handleAllChannels = this.handleAllChannels.bind(this);
-        this.handleHideAnnotated = this.handleHideAnnotated.bind(this);
-        this.handleShowGroups = this.handleShowGroups.bind(this);      
-        this.handleSelectChannel = this.handleSelectChannel.bind(this);
-        this.handleCheckAnnotation = this.handleCheckAnnotation.bind(this);
-        this.handleLayoutChange = this.handleLayoutChange.bind(this);
-        this.handleEcgSelect = this.handleEcgSelect.bind(this);
-        this.handleAnnSelect = this.handleAnnSelect.bind(this);
-        this.handleSort = this.handleSort.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCollapseGroups = this.handleCollapseGroups.bind(this);
-        this.handleCollapseCommon = this.handleCollapseCommon.bind(this); 
-    }
-    
-    handleShowGroups(value) {
-        if (this.state.show_groups.includes(value)) {
-            var filtered = this.state.show_groups.filter(t => t !== value)
-            this.setState({show_groups: filtered});
-        }
-        else {
-            this.setState({show_groups: this.state.show_groups.concat(value)});
-        }
-    }
-    
-    handleCheckAnnotation(e) {
-        let value = e.target.value;
-        if (this.state.annotation.includes(value)) {
-            var filtered = this.state.annotation.filter(t => t !== value)
-            this.setState({annotation: filtered});
-        }
-        else {
-            this.setState({annotation: this.state.annotation.concat(value)});
-        }
-    }
-    
-    handleHideAnnotated(e) {
-        this.setState({hide_annotated: !this.state.hide_annotated});
-    }
-    
-    handleCollapseGroups(e) {
-        if (!this.state.collapse_groups) {
-            this.setState({show_groups: []});
-        }
-        else {
-            var all_groups = [];
-            for (let item of this.props.ecg_store.annotation_list.values()) {
-                {item.annotations.length > 0 ? all_groups.push(item.id) : null}
-            }
-            this.setState({show_groups: all_groups});
-        }
-        this.setState({collapse_groups: !this.state.collapse_groups});
-    }
-    
-    handleCollapseCommon(e) {
-        this.setState({show_common: !this.state.show_common});
-    }
-    
-    handleAllChannels(e) {
-        this.setState({all_channels: !this.state.all_channels});
-    }
-    
-    handleSelectChannel(e) {
-        let value = parseInt(e.target.value);
-        this.setState({selected_channel: value});      
-    }
-    
-    handleLayoutChange(e) {
-        this.setState({view_all_channels: !this.state.view_all_channels});
-    }
-    
-    handleSubmit(e) {
-        let pid = this.state.pid;
-        var item = this.props.ecg_store.items.get(pid);
-        
-        item.annotation = this.state.annotation;
-        item.is_annotated = true;
-        this.props.ecg_store.setAnnotation(pid, this.state.annotation);
-        this.setState({annotation: []});
-    }
-    
-    handleSort(e) {
-        this.setState({descent_sort: !this.state.descent_sort});
-    }
-    
-    handleAnnSelect(e) {
-        this.setState({annotation: this.state.annotation.concat(e.target.value)});
-    }
-    
-    handleEcgSelect(e) {
-        this.setState({pid: e.target.value});
-    }
-    
-    showEcgName(item, index) {
-        if (this.state.hide_annotated & item.is_annotated)
-        {
-            return null
-        }
-        else {
-            return (
-                <option value={item.id}
-                        key={index}
-                        style={{color: item.is_annotated ? '#28a745' : "black"}}
-                        className="font100">
-                    {item.timestamp.slice(0, 5) + item.timestamp.slice(10, 16)}
-                </option>
-            )
-        }
-        
+export default class EcgPage extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      selectedChannel: 0,
+      viewAllChannels: true,
+      pid: null,
+      annotation: [],
+      descentSort: false,
+      signame: null,
+      hideAnnotated: false,
+      showGroups: [],
+      searchString: '',
+      collapseGroups: true,
+      showCommon: true,
+      browserWidth: 0,
+      browserHeight: 0,
+      currentEcgListKey: 0
     }
 
-    sortedList() {        
-        function parseEcgDate(str) {
-            return new Date(str.slice(6, 10) + '-' + 
+    this.handleAllChannels = this.handleAllChannels.bind(this)
+    this.handleHideAnnotated = this.handleHideAnnotated.bind(this)
+    this.handleShowGroups = this.handleShowGroups.bind(this)
+    this.handleSelectChannel = this.handleSelectChannel.bind(this)
+    this.handleCheckAnnotation = this.handleCheckAnnotation.bind(this)
+    this.handleLayoutChange = this.handleLayoutChange.bind(this)
+    this.handleEcgSelect = this.handleEcgSelect.bind(this)
+    this.handleAnnSelect = this.handleAnnSelect.bind(this)
+    this.handleSort = this.handleSort.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCollapseGroups = this.handleCollapseGroups.bind(this)
+    this.handleCollapseCommon = this.handleCollapseCommon.bind(this)
+  }
+
+  handleShowGroups (value) {
+    if (this.state.showGroups.includes(value)) {
+      var filtered = this.state.showGroups.filter(t => t !== value)
+      this.setState({showGroups: filtered})
+    } else {
+      this.setState({showGroups: this.state.showGroups.concat(value)})
+    }
+  }
+
+  handleCheckAnnotation (e) {
+    let value = e.target.value
+    if (this.state.annotation.includes(value)) {
+      var filtered = this.state.annotation.filter(t => t !== value)
+      this.setState({annotation: filtered})
+    } else {
+      this.setState({annotation: this.state.annotation.concat(value)})
+    }
+  }
+
+  handleHideAnnotated (e) {
+    this.setState({hideAnnotated: !this.state.hideAnnotated})
+  }
+
+  handleCollapseGroups (e) {
+    if (!this.state.collapseGroups) {
+      this.setState({showGroups: []})
+    } else {
+      var allGroups = []
+      for (let item of this.props.ecgStore.annotationList.values()) {
+        item.annotations.length > 0 ? allGroups.push(item.id) : null
+      }
+      this.setState({showGroups: allGroups})
+    }
+    this.setState({collapseGroups: !this.state.collapseGroups})
+  }
+
+  handleCollapseCommon (e) {
+    this.setState({showCommon: !this.state.showCommon})
+  }
+
+  handleAllChannels (e) {
+    this.setState({allChannels: !this.state.allChannels})
+  }
+
+  handleSelectChannel (e) {
+    let value = parseInt(e.target.value)
+    this.setState({selectedChannel: value})
+  }
+
+  handleLayoutChange (e) {
+    this.setState({viewAllChannels: !this.state.viewAllChannels})
+  }
+
+  handleSubmit (e) {
+    let pid = this.state.pid
+    var item = this.props.ecgStore.items.get(pid)
+
+    item.annotation = this.state.annotation
+    item.is_annotated = true
+    this.props.ecgStore.setAnnotation(pid, this.state.annotation)
+    this.setState({annotation: []})
+  }
+
+  handleSort (e) {
+    this.setState({descentSort: !this.state.descentSort})
+  }
+
+  handleAnnSelect (e) {
+    this.setState({annotation: this.state.annotation.concat(e.target.value)})
+  }
+
+  handleEcgSelect (e) {
+    this.setState({pid: e.target.value})
+  }
+
+  showEcgName (item, index) {
+    return (
+      !(this.state.hideAnnotated & item.is_annotated)
+        ? <option value={item.id}
+          key={index}
+          style={{color: item.is_annotated ? '#28a745' : 'black'}}
+          className='ecg-item-name'>
+          {item.timestamp.slice(0, 5) + item.timestamp.slice(10, 16)}
+        </option>
+        : null
+    )
+  }
+
+  sortedList () {
+    function parseEcgDate (str) {
+      return new Date(str.slice(6, 10) + '-' +
                             str.slice(3, 5) + '-' +
                             str.slice(0, 2) + 'T' +
-                            str.slice(11, 19));
-        }
-        
-        var sorted = this.props.ecg_store.items.values().sort(function(a, b) {
-                        return(parseEcgDate(b.timestamp) - parseEcgDate(a.timestamp))}) 
-        
-        if (this.state.descent_sort) {
-            return (
-                sorted.map( (item, index) => this.showEcgName(item, index) )                            
-            )
-        }
-        else {
-            return (
-                sorted.slice(0).reverse().map( (item, index) => this.showEcgName(item, index) )                             
-            )
-        }
+                            str.slice(11, 19))
     }
-    
-    renderEcgList() {
-        return (
-        <Row>
-            <FormGroup controlId="formControlsSelectMultiple" key={this.state.current_ecg_list_key}>
-                <FormControl componentClass="select"
-                             className="list"
-                             multiple
-                             value={ this.state.pid !== null ? [this.state.pid] : [''] }
-                             onChange={ this.handleEcgSelect }>
-                    { this.sortedList() }
-                </FormControl>
-            </FormGroup>
-        </Row>
-        )
-    }
-    
-    renderCommonDiagnose(diagnose, index) {
-        return (
 
-                <Checkbox value={diagnose}
-                          key={index}
-                          checked={this.state.annotation.includes(diagnose)}
-                          onChange={this.handleCheckAnnotation}>               
-                    { diagnose.split('/').slice(-1)[0] }
-                </Checkbox>
+    var sorted = this.props.ecgStore.items.values().sort(function (a, b) {
+      return (parseEcgDate(b.timestamp) - parseEcgDate(a.timestamp))
+    })
 
-        )
+    if (this.state.descentSort) {
+      return (
+        sorted.map((item, index) => this.showEcgName(item, index))
+      )
+    } else {
+      return (
+        sorted.slice(0).reverse().map((item, index) => this.showEcgName(item, index))
+      )
     }
-    
-    renderDiagnoseGroup(group_name, diagnoses, index) {
-        if (diagnoses.length == 0) {
-            if (group_name.toLowerCase().includes(this.state.search_string)) {
-                return (
-                    <Checkbox value={group_name}
-                              key={index}
-                              checked={this.state.annotation.includes(group_name)}
-                              onChange={this.handleCheckAnnotation}>
-                        {group_name}
-                    </Checkbox>
-                )
-            }
-            else { return null }
-        }
-        else {
-            var mask_diagnoses = diagnoses.filter(x => x.toLowerCase().includes(this.state.search_string));
-            let is_collapsed = !(this.state.show_groups.includes(group_name) || (this.state.search_string.length > 0))
-            return (
-                <Row className={is_collapsed ? "collapsed_group" : "enrolled_group"} key={index}>
-                    <span value={group_name} onClick={this.handleShowGroups.bind(this, group_name)}> 
-                        <Icon name={!is_collapsed ? "angle-down" : "angle-right"} />
-                        <span className="group_name">{group_name}</span>
-                    </span>
-            
-                    { !is_collapsed ?
-                        <Row className="group_annotations">
-                            {mask_diagnoses.map( (item, index) => 
-                                <Checkbox value={group_name + '/' + item}
-                                          key={index}  
-                                          checked={this.state.annotation.includes(group_name + '/' + item)}
-                                          onChange={this.handleCheckAnnotation}>{item}</Checkbox> )
-                            }
-                        </Row>
-                      :
-                      null
-                    }
-                </Row>
-            )
-        }
-    }
- 
-    renderDiagnose() {
+  }
+
+  renderEcgList () {
+    return (
+      <Row>
+        <FormGroup controlId='formControlsSelectMultiple' key={this.state.currentEcgListKey}>
+          <FormControl componentClass='select'
+            className='ecg-list'
+            multiple
+            value={this.state.pid !== null ? [this.state.pid] : ['']}
+            onChange={this.handleEcgSelect}>
+            { this.sortedList() }
+          </FormControl>
+        </FormGroup>
+      </Row>
+    )
+  }
+
+  renderCommonItems (diagnose, index) {
+    return (
+      <Checkbox value={diagnose}
+        key={index}
+        checked={this.state.annotation.includes(diagnose)}
+        onChange={this.handleCheckAnnotation}>
+        { diagnose.split('/').slice(-1)[0] }
+      </Checkbox>
+    )
+  }
+
+  renderDropdownList (groupName, items, index) {
+    if (items.length === 0) {
+      if (groupName.toLowerCase().includes(this.state.searchString)) {
         return (
-        <Row>
-            <FormGroup>
-                {this.props.ecg_store.annotation_list.values().map( (item, index) => 
-                    this.renderDiagnoseGroup(item.id, item.annotations, index))}
-            </FormGroup>
-        </Row>
-        )                       
-    }
-    
-    renderCheckBox() {
-        let item = this.props.ecg_store.get(this.state.pid);
-        if (item.signame !== null) {
-            let channels = [...Array(item.signame.length).keys()];
-                 
-            return (
-            <Row className="button-group">
-                {channels.map( (x, key) => <Button value={x} 
-                                            key={key}
-                                            type="submit" 
-                                            className="set_channel"
-                                            onClick={this.handleSelectChannel} 
-                                            bsStyle={(this.state.selected_channel === x) ?
-                                                        "primary": "default"}>{item.signame[x]}</Button> )}
+          <Checkbox value={groupName}
+            key={index}
+            checked={this.state.annotation.includes(groupName)}
+            onChange={this.handleCheckAnnotation}>
+            {groupName}
+          </Checkbox>
+        )
+      } else { return null }
+    } else {
+      let maskItems = items.filter(item => item.toLowerCase().includes(this.state.searchString))
+      let isCollapsed = !(this.state.showGroups.includes(groupName) || (this.state.searchString.length > 0))
+      return (
+        <Row className={isCollapsed ? 'collapsed-group' : 'enrolled-group'} key={index}>
+          <span value={groupName} onClick={this.handleShowGroups.bind(this, groupName)}>
+            <Icon name={!isCollapsed ? 'angle-down' : 'angle-right'} />
+            <span className='group-name'>{groupName}</span>
+          </span>
+
+          { !isCollapsed
+            ? <Row className='group-items'>
+              {maskItems.map((item, index) =>
+                <Checkbox value={groupName + '/' + item}
+                  key={index}
+                  checked={this.state.annotation.includes(groupName + '/' + item)}
+                  onChange={this.handleCheckAnnotation}>{item}</Checkbox>)
+              }
             </Row>
-            )
-        }
+            : null
+          }
+        </Row>
+      )
     }
-    
-    renderSelectedChannel(item) {
-        let x = this.state.selected_channel;
-        return (
-            <EcgSignalPlot signal={item.signal[x]}
-                           id={item.id + x}
-                           fs={item.frequency}
-                           signame={item.signame[x]}
-                           units={item.units[x]}
-                           layout_type="1x1"
-                           width={0.65 * this.state.browser_width}
-                           height={0.7 * this.state.browser_height}
-                           div_id='subplots'/> 
-        )
-    }
-    
-    renderGridPlot(layout_type) {        
-        let item = this.props.ecg_store.get(this.state.pid);
-        if (item == undefined) {
-            return null
-        }
-        if (item.waitingData) {
-            return null
-        }
-        if (this.state.view_all_channels) {
-            return (
-                <EcgSignalPlot signal={item.signal}
-                               id={item.id}
-                               fs={item.frequency} 
-                               signame={item.signame}
-                               units={item.units}
-                               layout_type="6x2"
-                               width={0.65 * this.state.browser_width}
-                               height={0.7 * this.state.browser_height}
-                               div_id='subplots'/>
-            )
-        }
-        else {
-            return (
-                <Col>
-                    <Row>
-                        {this.renderCheckBox()}
-                    </Row>
-                    <Row>
-                        {this.renderSelectedChannel(item)}
-                    </Row>
-                </Col>
-            )
-        }
-    }
-    
-    renderSearch() {
-        return (
-            <FormGroup controlId="formBasicText">
-                <FormControl type="text"
-                             placeholder="Текст для поиска"
-                             className="search_line"
-                             onChange={e => this.setState({search_string: e.target.value.toLowerCase()})}/>
-            </FormGroup>
-        )
-    }
-    
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        var item = prevProps.ecg_store.items.get(prevState.pid);       
-        if (item === undefined & prevState.pid !== null) {
-            this.setState({pid: null,
-                           current_ecg_list_key: (this.state.current_ecg_list_key + 1) % 2});
-        }
-    }
-    
-    updateDimensions() {  
-        this.setState({browser_width: window.innerWidth,
-                       browser_height: window.innerHeight});
-    }
-    
-    componentDidMount() {
-        this.updateDimensions();
-        window.addEventListener("resize", this.updateDimensions.bind(this));
-    }
-                      
-    render() {        
-        if (!this.props.ecg_store.ready_ecg_list | !this.props.ecg_store.ready_annotation_list) {
-            return (
-                <LoadingSpinner text="Ожидание соединения с сервером"/>
-            )
-        }
-        else {
-            return (
-            <div className="page">
-                <Grid fluid>
-                <Row>
-                    <Col className="left_column">
-                        <div>
-                        <Row>
-                            <span className='ecg_list_header'>Список ЭКГ</span>
-                        </Row>
-                        <Row>
-                            <a href="#" className="onleft" onClick={this.handleHideAnnotated}>
-                                {this.state.hide_annotated ? "Показать все" : "На расшифровку"}
-                            </a>
-                        </Row>
-                        <Row>
-                            <a href="#" className="onleft" onClick={this.handleSort}>
-                                {this.state.descent_sort ? "Сначала старые" : "Сначала новые"}
-                            </a>
-                        </Row>
-                        <Row>
-                            {this.renderEcgList()}
-                        </Row>
-                        </div>
-                    </Col>
-                    <Col className="middle_column" ref="bla">
-                        <Row className='ecg_list_header'>
-                            Результат расшифровки
-                        </Row>
-                        <Row>
-                            {(this.props.ecg_store.items.get(this.state.pid) != undefined) ?
-                                ((this.props.ecg_store.items.get(this.state.pid).is_annotated) ?
-                                    this.props.ecg_store.items.get(this.state.pid).annotation.map( x =>
-                                        {return x.split('/').slice(-1)[0]}).join(', ')
-                                    :
-                                    "Выберите значения из справочника и нажмите кнопку Сохранить"
-                                )
-                                :
-                                null
-                            }
-                        </Row>
-                        <Row className='list_header2'>
-                            Просмотр ЭКГ
-                            {(this.props.ecg_store.items.get(this.state.pid) != undefined) ?
-                                " " + this.props.ecg_store.items.get(this.state.pid).timestamp
-                                :
-                                null
-                            }
-                        </Row>
-                        <Row className="show_leads">
-                            <span>
-                                Показать отведения
-                                <a href="#" className="onleft" onClick={this.handleLayoutChange}>
-                                    {this.state.view_all_channels ? " по-одному" : " все"}
-                                </a>
-                            </span>
-                        </Row>
-                        
-                        {(this.props.ecg_store.items.values().length == 0) ?
-                            <Row><span className="empty">Список ЭКГ пуст</span></Row>
-                            :
-                            ((this.state.pid !== null) ?
-                                <Row>{this.renderGridPlot()}</Row>
-                                :
-                                <Row><span className="empty">Выберите ЭКГ из списка</span></Row>                               
-                            )
-                        }                       
-                    </Col>
-                    <Col className='border_left right_column'>
-                        <Row className='list_header'>
-                            Расшифровка ЭКГ
-                        </Row>
-                        <Row>
-                            <span className='list_header subheader'><span>Популярное</span>
-                            <a href="#" onClick={this.handleCollapseCommon}>
-                                {this.state.show_common ? "свернуть" : "развернуть"}
-                            </a>
-                            </span>
-                        </Row>                        
-                        {this.state.show_common ?
-                            <Row className='common_list'>
-                                <FormGroup>
-                                    {this.props.ecg_store.common_annotations.values().map( (item, index) => 
-                                        this.renderCommonDiagnose(item, index))}
-                                </FormGroup>
-                            </Row>
-                            :
-                            null
-                        }                        
-                        <Row>
-                            <span className='list_header subheader2'>
-                                <span>Справочник</span>
-                                <a href="#" onClick={this.handleCollapseGroups}>
-                                {this.state.collapse_groups ? "развернуть" : "свернуть"}
-                                </a>
-                            </span>
-                        </Row>                        
-                        <Row>
-                            {this.renderSearch()}
-                        </Row>                           
-                        <Row className={this.state.show_common ? 'overflow_small' : 'overflow_large'}>
-                            {this.props.ecg_store.annotation_list.values().map( (item, index) => 
-                                this.renderDiagnoseGroup(item.id, item.annotations, index))}
-                        </Row>                        
-                        <Row className="bottom">
-                            <Button type="submit" 
-                                    bsStyle="success" 
-                                    className="submit"
-                                    disabled={this.state.annotation.length == 0}
-                                    onClick={this.handleSubmit}>Сохранить</Button>
-                        </Row>
-                    </Col>
-                </Row>
-                </Grid>
-            </div>
-            )
-        }
-    }
-}
+  }
 
+  renderDropdownMenu () {
+    return (
+      <Row>
+        <FormGroup>
+          {this.props.ecgStore.annotationList.values().map((item, index) =>
+            this.renderDropdownList(item.id, item.annotations, index))}
+        </FormGroup>
+      </Row>
+
+    )
+  }
+
+  renderCheckBox () {
+    let item = this.props.ecgStore.get(this.state.pid)
+    if (item.signame !== null) {
+      let channels = [...Array(item.signame.length).keys()]
+
+      return (
+        <Row className='button-group'>
+          {channels.map((x, key) => <Button value={x}
+            key={key}
+            type='submit'
+            className='set-channel'
+            onClick={this.handleSelectChannel}
+            bsStyle={(this.state.selectedChannel === x)
+              ? 'primary' : 'default'}>{item.signame[x]}</Button>)}
+        </Row>
+      )
+    }
+  }
+
+  renderSelectedChannel (item) {
+    let x = this.state.selectedChannel
+    return (
+      <EcgSignalPlot signal={item.signal[x]}
+        id={item.id + x}
+        fs={item.frequency}
+        signame={item.signame[x]}
+        units={item.units[x]}
+        layoutType='1x1'
+        width={0.65 * this.state.browserWidth}
+        height={0.7 * this.state.browserHeight}
+        divId='subplots' />
+    )
+  }
+
+  renderGridPlot (layoutType) {
+    let item = this.props.ecgStore.get(this.state.pid)
+    if (item === undefined) {
+      return null
+    }
+    if (item.waitingData) {
+      return null
+    }
+    if (this.state.viewAllChannels) {
+      return (
+        <EcgSignalPlot signal={item.signal}
+          id={item.id}
+          fs={item.frequency}
+          signame={item.signame}
+          units={item.units}
+          layoutType='6x2'
+          width={0.65 * this.state.browserWidth}
+          height={0.7 * this.state.browserHeight}
+          divId='subplots' />
+      )
+    } else {
+      return (
+        <Col>
+          <Row>
+            {this.renderCheckBox()}
+          </Row>
+          <Row>
+            {this.renderSelectedChannel(item)}
+          </Row>
+        </Col>
+      )
+    }
+  }
+
+  renderSearch () {
+    return (
+      <FormGroup controlId='formBasicText'>
+        <FormControl type='text'
+          placeholder='Текст для поиска'
+          className='search-line'
+          onChange={e => this.setState({searchString: e.target.value.toLowerCase()})} />
+      </FormGroup>
+    )
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    var item = prevProps.ecgStore.items.get(prevState.pid)
+    if (item === undefined & prevState.pid !== null) {
+      this.setState({pid: null,
+        currentEcgListKey: (this.state.currentEcgListKey + 1) % 2})
+    }
+  }
+
+  updateDimensions () {
+    this.setState({browserWidth: window.innerWidth,
+      browserHeight: window.innerHeight})
+  }
+
+  componentDidMount () {
+    this.updateDimensions()
+    window.addEventListener('resize', this.updateDimensions.bind(this))
+  }
+
+  render () {
+    if (!this.props.ecgStore.readyEcgList | !this.props.ecgStore.readyAnnotationList) {
+      return (
+        <LoadingSpinner text='Ожидание соединения с сервером' />
+      )
+    } else {
+      return (
+        <div className='page'>
+          <Grid fluid>
+            <Row>
+              <Col className='left-column'>
+                <div>
+                  <Row>
+                    <span className='headline'>Список ЭКГ</span>
+                  </Row>
+                  <Row>
+                    <a href='#' className='inline-controll margin-top' onClick={this.handleHideAnnotated}>
+                      {this.state.hideAnnotated ? 'Показать все' : 'На расшифровку'}
+                    </a>
+                  </Row>
+                  <Row>
+                    <a href='#' className='inline-controll' onClick={this.handleSort}>
+                      {this.state.descentSort ? 'Сначала старые' : 'Сначала новые'}
+                    </a>
+                  </Row>
+                  <Row>
+                    {this.renderEcgList()}
+                  </Row>
+                </div>
+              </Col>
+              <Col className='middle-column'>
+                <Row className='headline'>
+                            Результат расшифровки
+                </Row>
+                <Row className='margin-top'>
+                  {(this.props.ecgStore.items.get(this.state.pid) !== undefined)
+                    ? ((this.props.ecgStore.items.get(this.state.pid).is_annotated)
+                      ? this.props.ecgStore.items.get(this.state.pid).annotation.map(x => { return x.split('/').slice(-1)[0] }).join(', ')
+                      : 'Выберите значения из справочника и нажмите кнопку Сохранить'
+                    )
+                    : null
+                  }
+                </Row>
+                <Row className='headline margin-top'>
+                            Просмотр ЭКГ
+                  {(this.props.ecgStore.items.get(this.state.pid) !== undefined)
+                    ? ' ' + this.props.ecgStore.items.get(this.state.pid).timestamp
+                    : null
+                  }
+                </Row>
+                <Row className='margin-top'>
+                  <span>
+                    Показать отведения
+                    <a href='#' className='inline-controll' onClick={this.handleLayoutChange}>
+                      {this.state.viewAllChannels ? ' по-одному' : ' все'}
+                    </a>
+                  </span>
+                </Row>
+
+                {(this.props.ecgStore.items.values().length === 0)
+                  ? <Row><span className='centered-text'>Список ЭКГ пуст</span></Row>
+                  : ((this.state.pid !== null)
+                    ? <Row>{this.renderGridPlot()}</Row>
+                    : <Row><span className='centered-text'>Выберите ЭКГ из списка</span></Row>
+                  )
+                }
+              </Col>
+              <Col className='right-column solid-border-left'>
+                <Row className='headline'>
+                            Расшифровка ЭКГ
+                </Row>
+                <Row>
+                  <span className='headline subsection'><span>Популярное</span>
+                    <a href='#' onClick={this.handleCollapseCommon}>
+                      {this.state.showCommon ? 'свернуть' : 'развернуть'}
+                    </a>
+                  </span>
+                </Row>
+                {this.state.showCommon
+                  ? <Row className='common-items-list'>
+                    <FormGroup>
+                      {this.props.ecgStore.commonAnnotations.values().map((item, index) =>
+                        this.renderCommonItems(item, index))}
+                    </FormGroup>
+                  </Row>
+                  : null
+                }
+                <Row>
+                  <span className='headline subsection2'>
+                    <span>Справочник</span>
+                    <a href='#' onClick={this.handleCollapseGroups}>
+                      {this.state.collapseGroups ? 'развернуть' : 'свернуть'}
+                    </a>
+                  </span>
+                </Row>
+                <Row>
+                  {this.renderSearch()}
+                </Row>
+                <Row className={this.state.showCommon ? 'short-list' : 'full-list'}>
+                  {this.props.ecgStore.annotationList.values().map((item, index) =>
+                    this.renderDropdownList(item.id, item.annotations, index))}
+                </Row>
+                <Row className='bottom'>
+                  <Button type='submit'
+                    bsStyle='success'
+                    className='submit'
+                    disabled={this.state.annotation.length === 0 || this.state.pid === null}
+                    onClick={this.handleSubmit}>Сохранить</Button>
+                </Row>
+              </Col>
+            </Row>
+          </Grid>
+        </div>
+      )
+    }
+  }
+}

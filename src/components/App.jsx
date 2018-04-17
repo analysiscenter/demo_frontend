@@ -1,24 +1,22 @@
 import React from 'react'
-import { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 
-import { ecg_store } from '../stores/stores'
+import { ecgStore } from '../stores/stores'
 import EcgPage from './EcgPage.jsx'
 
-
-export default class App extends Component {
-  render() {
+export default class App extends React.Component {
+  render () {
     return (
-    <Provider ecg_store={ecg_store}>
+      <Provider ecgStore={ecgStore}>
         <Router>
-        <div>
+          <div>
             <Switch>
-                <Route exact path="/" component={EcgPage} />
+              <Route exact path='/' component={EcgPage} />
             </Switch>
-        </div>
+          </div>
         </Router>
-    </Provider>
+      </Provider>
     )
   }
 }
