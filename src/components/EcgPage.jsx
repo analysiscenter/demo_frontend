@@ -28,19 +28,6 @@ export default class EcgPage extends React.Component {
       browserHeight: 0,
       currentEcgListKey: 0
     }
-
-    this.handleAllChannels = this.handleAllChannels.bind(this)
-    this.handleHideAnnotated = this.handleHideAnnotated.bind(this)
-    this.handleShowGroups = this.handleShowGroups.bind(this)
-    this.handleSelectChannel = this.handleSelectChannel.bind(this)
-    this.handleCheckAnnotation = this.handleCheckAnnotation.bind(this)
-    this.handleLayoutChange = this.handleLayoutChange.bind(this)
-    this.handleEcgSelect = this.handleEcgSelect.bind(this)
-    this.handleAnnSelect = this.handleAnnSelect.bind(this)
-    this.handleSort = this.handleSort.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleCollapseGroups = this.handleCollapseGroups.bind(this)
-    this.handleCollapseCommon = this.handleCollapseCommon.bind(this)
   }
 
   handleShowGroups (value) {
@@ -162,7 +149,7 @@ export default class EcgPage extends React.Component {
             className='ecg-list'
             multiple
             value={this.state.pid !== null ? [this.state.pid] : ['']}
-            onChange={this.handleEcgSelect}>
+            onChange={this.handleEcgSelect.bind(this)}>
             { this.sortedList() }
           </FormControl>
         </FormGroup>
@@ -175,7 +162,7 @@ export default class EcgPage extends React.Component {
       <Checkbox value={diagnose}
         key={index}
         checked={this.state.annotation.includes(diagnose)}
-        onChange={this.handleCheckAnnotation}>
+        onChange={this.handleCheckAnnotation.bind(this)}>
         { diagnose.split('/').slice(-1)[0] }
       </Checkbox>
     )
@@ -188,7 +175,7 @@ export default class EcgPage extends React.Component {
           <Checkbox value={groupName}
             key={index}
             checked={this.state.annotation.includes(groupName)}
-            onChange={this.handleCheckAnnotation}>
+            onChange={this.handleCheckAnnotation.bind(this)}>
             {groupName}
           </Checkbox>
         )
@@ -209,7 +196,7 @@ export default class EcgPage extends React.Component {
                 <Checkbox value={groupName + '/' + item}
                   key={index}
                   checked={this.state.annotation.includes(groupName + '/' + item)}
-                  onChange={this.handleCheckAnnotation}>{item}</Checkbox>)
+                  onChange={this.handleCheckAnnotation.bind(this)}>{item}</Checkbox>)
               }
             </Row>
             : null
@@ -227,7 +214,6 @@ export default class EcgPage extends React.Component {
             this.renderDropdownList(item.id, item.annotations, index))}
         </FormGroup>
       </Row>
-
     )
   }
 
@@ -235,14 +221,13 @@ export default class EcgPage extends React.Component {
     let item = this.props.ecgStore.get(this.state.pid)
     if (item.signame !== null) {
       let channels = [...Array(item.signame.length).keys()]
-
       return (
         <Row className='button-group'>
           {channels.map((x, key) => <Button value={x}
             key={key}
             type='submit'
             className='set-channel'
-            onClick={this.handleSelectChannel}
+            onClick={this.handleSelectChannel.bind(this)}
             bsStyle={(this.state.selectedChannel === x)
               ? 'primary' : 'default'}>{item.signame[x]}</Button>)}
         </Row>
@@ -250,22 +235,7 @@ export default class EcgPage extends React.Component {
     }
   }
 
-  renderSelectedChannel (item) {
-    let x = this.state.selectedChannel
-    return (
-      <EcgSignalPlot signal={item.signal[x]}
-        id={item.id + x}
-        fs={item.frequency}
-        signame={item.signame[x]}
-        units={item.units[x]}
-        layoutType='1x1'
-        width={0.65 * this.state.browserWidth}
-        height={0.7 * this.state.browserHeight}
-        divId='subplots' />
-    )
-  }
-
-  renderGridPlot (layoutType) {
+  renderEcgPlot () {
     let item = this.props.ecgStore.get(this.state.pid)
     if (item === undefined) {
       return null
@@ -286,13 +256,22 @@ export default class EcgPage extends React.Component {
           divId='subplots' />
       )
     } else {
+      let channel = this.state.selectedChannel
       return (
         <Col>
           <Row>
             {this.renderCheckBox()}
           </Row>
           <Row>
-            {this.renderSelectedChannel(item)}
+            <EcgSignalPlot signal={item.signal[channel]}
+              id={item.id + channel}
+              fs={item.frequency}
+              signame={item.signame[channel]}
+              units={item.units[channel]}
+              layoutType='1x1'
+              width={0.65 * this.state.browserWidth}
+              height={0.7 * this.state.browserHeight}
+              divId='subplots' />
           </Row>
         </Col>
       )
@@ -329,7 +308,7 @@ export default class EcgPage extends React.Component {
   }
 
   render () {
-    if (!this.props.ecgStore.readyEcgList | !this.props.ecgStore.readyAnnotationList) {
+    if (!this.props.ecgStore.readyEcgList || !this.props.ecgStore.readyAnnotationList) {
       return (
         <LoadingSpinner text='Ожидание соединения с сервером' />
       )
@@ -344,12 +323,12 @@ export default class EcgPage extends React.Component {
                     <span className='headline'>Список ЭКГ</span>
                   </Row>
                   <Row>
-                    <a href='#' className='inline-controll margin-top' onClick={this.handleHideAnnotated}>
+                    <a href='#' className='inline-controll margin-top' onClick={this.handleHideAnnotated.bind(this)}>
                       {this.state.hideAnnotated ? 'Показать все' : 'На расшифровку'}
                     </a>
                   </Row>
                   <Row>
-                    <a href='#' className='inline-controll' onClick={this.handleSort}>
+                    <a href='#' className='inline-controll' onClick={this.handleSort.bind(this)}>
                       {this.state.descentSort ? 'Сначала старые' : 'Сначала новые'}
                     </a>
                   </Row>
@@ -365,7 +344,8 @@ export default class EcgPage extends React.Component {
                 <Row className='margin-top'>
                   {(this.props.ecgStore.items.get(this.state.pid) !== undefined)
                     ? ((this.props.ecgStore.items.get(this.state.pid).is_annotated)
-                      ? this.props.ecgStore.items.get(this.state.pid).annotation.map(x => { return x.split('/').slice(-1)[0] }).join(', ')
+                      ? this.props.ecgStore.items.get(this.state.pid).annotation.map(x =>
+                        { return x.split('/').slice(-1)[0] }).join(', ')
                       : 'Выберите значения из справочника и нажмите кнопку Сохранить'
                     )
                     : null
@@ -381,16 +361,15 @@ export default class EcgPage extends React.Component {
                 <Row className='margin-top'>
                   <span>
                     Показать отведения
-                    <a href='#' className='inline-controll' onClick={this.handleLayoutChange}>
+                    <a href='#' className='inline-controll' onClick={this.handleLayoutChange.bind(this)}>
                       {this.state.viewAllChannels ? ' по-одному' : ' все'}
                     </a>
                   </span>
                 </Row>
-
                 {(this.props.ecgStore.items.values().length === 0)
                   ? <Row><span className='centered-text'>Список ЭКГ пуст</span></Row>
                   : ((this.state.pid !== null)
-                    ? <Row>{this.renderGridPlot()}</Row>
+                    ? <Row>{this.renderEcgPlot()}</Row>
                     : <Row><span className='centered-text'>Выберите ЭКГ из списка</span></Row>
                   )
                 }
@@ -401,7 +380,7 @@ export default class EcgPage extends React.Component {
                 </Row>
                 <Row>
                   <span className='headline subsection'><span>Популярное</span>
-                    <a href='#' onClick={this.handleCollapseCommon}>
+                    <a href='#' onClick={this.handleCollapseCommon.bind(this)}>
                       {this.state.showCommon ? 'свернуть' : 'развернуть'}
                     </a>
                   </span>
@@ -418,7 +397,7 @@ export default class EcgPage extends React.Component {
                 <Row>
                   <span className='headline subsection2'>
                     <span>Справочник</span>
-                    <a href='#' onClick={this.handleCollapseGroups}>
+                    <a href='#' onClick={this.handleCollapseGroups.bind(this)}>
                       {this.state.collapseGroups ? 'развернуть' : 'свернуть'}
                     </a>
                   </span>
@@ -435,7 +414,7 @@ export default class EcgPage extends React.Component {
                     bsStyle='success'
                     className='submit'
                     disabled={this.state.annotation.length === 0 || this.state.pid === null}
-                    onClick={this.handleSubmit}>Сохранить</Button>
+                    onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
                 </Row>
               </Col>
             </Row>
