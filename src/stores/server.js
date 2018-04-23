@@ -13,7 +13,7 @@ export default class Server extends EventEmitter {
 
     constructor() {
         super()
-        this.server = socket('http://' + window.location.hostname + ':9090' + '/api')
+        this.server = socket('http://' + window.location.hostname + ':9090/api', {port:9090})
     }
 
     init() {

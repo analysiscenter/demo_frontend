@@ -13,28 +13,26 @@ const ServerEvents = keyMirror({
   SERVER_READY: null
 })
 
-const ECG_Requests = keyMirror({
-  ECG_GET_LIST: null,
-  ECG_GET_ITEM_DATA: null,
-  ECG_SET_ANNOTATION: null,
-  ECG_GET_ANNOTATION_LIST: null,
-  ECG_GET_COMMON_ANNOTATION_LIST: null
+const MT_Requests = keyMirror({
+  MT_GET_LIST: null,
+  MT_GET_ITEM_DATA: null,
+  MT_GET_INFERENCE: null,
+  MT_UPLOAD_IMAGE: null
 })
 
-const ECG_Responses = keyMirror({
-  ECG_GOT_LIST: null,
-  ECG_GOT_ITEM_DATA: null,
-  ECG_GOT_ANNOTATION_LIST: null,
-  ECG_GOT_COMMON_ANNOTATION_LIST: null
+const MT_Responses = keyMirror({
+  MT_GOT_LIST: null,
+  MT_GOT_ITEM_DATA: null,
+  MT_GOT_INFERENCE: null
 })
 
-const ECG_API = Object.assign({}, ECG_Responses, ECG_Requests)
+const MT_API = Object.assign({}, MT_Responses, MT_Requests)
 
-const API_Requests = Object.assign({}, ECG_Requests)
-const API_Responses = Object.assign({}, ECG_Responses)
+const API_Requests = Object.assign({}, MT_Requests)
+const API_Responses = Object.assign({}, MT_Responses)
 
 const API_Events = Object.assign({}, API_Requests, API_Responses)
 
 const Events = Object.assign({}, SocketIOEvents, ServerEvents, API_Events)
 
-export { Events, SocketIOEvents, ServerEvents, API_Events, API_Responses, API_Requests, ECG_API, ECG_Responses, ECG_Requests }
+export { Events, SocketIOEvents, ServerEvents, API_Events, API_Responses, API_Requests, MT_API, MT_Responses, MT_Requests }

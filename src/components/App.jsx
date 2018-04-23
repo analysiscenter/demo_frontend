@@ -1,21 +1,16 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 
-import { ecgStore } from '../stores/stores'
-import EcgPage from './EcgPage.jsx'
+import { mtStore } from '../stores/stores'
+import MTPage from './MTPage.jsx'
 
 export default class App extends React.Component {
   render () {
     return (
-      <Provider ecgStore={ecgStore}>
-        <Router>
-          <div>
-            <Switch>
-              <Route exact path='/' component={EcgPage} />
-            </Switch>
-          </div>
-        </Router>
+      <Provider mtStore={mtStore}>
+        <div>
+          <MTPage />
+        </div>
       </Provider>
     )
   }
