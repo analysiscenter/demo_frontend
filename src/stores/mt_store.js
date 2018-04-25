@@ -5,13 +5,13 @@ import { API_Events } from './const'
 const itemTemplate = {
   id: null,
   image: null,
-  src: null,
-  height: null,
-  width: null,
+  // src: null,
+  // height: null,
+  // width: null,
+  thumbnail: null,
   inference: null,
   waitingData: false,
-  waitingInference: false,
-  uploaded: false
+  waitingInference: false
 }
 
 export default class MtStore {
@@ -35,22 +35,50 @@ export default class MtStore {
 
   @action
   onGotList (data, meta) {
-    // data.map((item) => this.items.set(item.id, Object.assign({}, item_template, item)))
+    console.log('GOT LIST LENGTH', data.length)
+    data.map((item) => this.items.set(item.id, Object.assign({}, itemTemplate, item)))
     this.ready = true
   }
 
   @action
   onGotItemData (data, meta) {
-    extendObservable(this.items.get(data.id), data)
-    this.items.get(data.id).waitingData = false
-    this.makeImage(data.id)
+    const item = this.items.get(data.id)
+    let image = new Image()
+    let that = this
+    const src = new Uint8Array(data.src).reduce((data, byte) => data + String.fromCharCode(byte), '')
+    image.src = 'data:image/jpeg;base64,' + src
+    image.onload = function () {
+      item.image = image
+      that.setThumbnail(data.id, image)
+      item.waitingData = false
+    }
+  }
+
+  setThumbnail (id, image) {
+    const item = this.items.get(id)
+    const canvas = document.createElement('canvas')
+    canvas.width = 150;
+    canvas.height = 150;
+    const ctx = canvas.getContext('2d')
+    const minSize = Math.min(image.width, image.height)
+    const xShift = (image.width - minSize) / 2
+    const yShift = (image.height - minSize) / 2
+    ctx.drawImage(image, xShift, yShift, minSize, minSize, 0, 0, canvas.width, canvas.height)
+    var url = canvas.toDataURL()
+    var thumbnail = new Image()
+    thumbnail.src = url
+    thumbnail.onload = function () {
+        item.thumbnail = thumbnail
+        console.log('thumbnail')
+      }
   }
 
   @action
   onGotInference (data, meta) {
     console.log('onGotInference', data.id)
-    extendObservable(this.items.get(data.id), data)
-    this.items.get(data.id).waitingInference = false
+    const item = this.items.get(data.id)
+    item.inference = data.inference
+    item.waitingInference = false
   }
 
   @action
@@ -76,30 +104,21 @@ export default class MtStore {
     this.server.send(API_Events.MT_UPLOAD_IMAGE, {data: data}, {})
   }
 
-  @action
-  makeImage (id) {
-    const item = this.items.get(id)
-    const data = toJS(item)
-
-    const canvas = document.createElement('canvas')
-    canvas.width = item.width
-    canvas.height = item.height
-    const ctx = canvas.getContext('2d')
-    console.log('makeImage', item.width, item.height)
-
-    let image = new Image()
-    image.onload = function () {
-      ctx.drawImage(image, 0, 0)
-      data.image = ctx.getImageData(0, 0, item.width, item.height)
-      extendObservable(item, data)
-      console.log('makeImage', data.image)
-    }
-    const src = new Uint8Array(data.src).reduce((data, byte) => data + String.fromCharCode(byte), '')
-    image.src = 'data:image/jpeg;base64,' + src
-  }
-
   getImage (id) {
     const item = this.items.get(id)
     return item.image
+  }
+
+  setImage (item) {
+    this.items.set(item.id, Object.assign({}, itemTemplate, item))
+    this.setThumbnail(item.id, item.image)
+  }
+
+  get (id) {
+    const item = this.items.get(id)
+    if (item !== undefined) {
+      if (item.image === null) { this.getItemData(id) }
+    }
+    return item
   }
 }
